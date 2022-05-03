@@ -1,0 +1,147 @@
+﻿@{ 
+    var session = (MotelManager.Common.UserLogin)Session[MotelManager.Common.CommonConstants.USER_SESSION];
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        @*Home Plat a Real Estates and Builders Category Flat Bootstrap Responsive Web Template | Home :: w3layouts*@
+    </title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="~/Resources/bootstrap-select-dropdown-with-search/css/bootstrap-select.min.css">
+    <!--css-->
+    <link href="~/Public/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+
+    <link href="~/Public/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!--css-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Home Plat Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <link rel="stylesheet" href="~/Public/css/flexslider.css" type="text/css" media="screen" />
+    <!--js-->
+    <script src="~/Public/js/jquery.min.js"></script>
+    <script src="~/Public/js/bootstrap.min.js"></script>
+    <!--js-->
+    <!--webfonts-->
+    <!--webfonts-->
+    <!--Icon-->
+    <script src="https://kit.fontawesome.com/6df9eee8ba.js" crossorigin="anonymous"></script>
+    <!--Main style-->
+    <link href="~/Public/css/main.style.css" rel="stylesheet" />
+    <style>
+        ul {
+        }
+
+        .inline-nav {
+            float: left;
+            margin-left: 20px
+        }
+
+        .navbar-nav {
+            flex-direction: row;
+        }
+
+        a.dropdown-item {
+            margin-left: 10%;
+            margin-bottom: 10%;
+            color: darkblue
+        }
+
+        #dropdown-box {
+            min-width: 200px
+        }
+
+        .dropdown-menu {
+        }
+
+        hr {
+            margin: 5% auto
+        }
+
+        a.btn.btn-default {
+            background-color: white
+        }
+
+        .right-side {
+            margin-top: 1.2%
+        }
+
+        .menu-user {
+            align-items: flex-start;
+            justify-content: left;
+            padding-bottom: 10px
+        }
+
+        .right-side-content > ul > li {
+            margin-top: 10px
+        }
+
+            .right-side-content > ul > li:hover {
+                font-weight: bold;
+                font-size: 1em
+            }
+
+        .right-side {
+            border: 0
+        }
+
+        .menu-user > li > a {
+            color: #636e72
+        }
+
+        .menu-user > li:hover {
+            color: #02B875
+        }
+    </style>
+</head>
+
+<body>
+    <!--header-->
+    @Html.Action("_HeaderLayout", "Home")
+    <!--header-->
+    <!--banner-->
+    <!--banner-->
+    <div class="content content-background">
+
+        <div class="popular-w3">
+            <div class="container">
+                <div class="">
+                    <div class="">
+                        <div class="row col-lg-12">
+                            <div class="col-md-3 p-lg-3 right-side" style="padding: 0">
+                                <div class="right-side-content" style="margin-top: -1em">
+                                    <ul class="menu-user">
+                                        <li class="new-post"><a href="/user/@session.UserName/createpost"><i class="fa fa-pencil-alt"></i> Đăng tin mới</a></li>
+                                        <li class="save-post"><a href="/user/@session.UserName/savedpost"><i class="fa fa-heart"></i> Tin đã lưu</a></li>
+                                        <li class="manager-post"><a href="/user/@session.UserName/list"><i class="fa fa-tasks"></i> Quản lý tin đăng</a></li>
+                                        <li class="info-user"><a href="/user/@session.UserName"><i class="fa fa-user"></i> Thông tin cá nhân</a></li>
+                                        <li class=""><a href="@Url.Action("Logout","Account")"><i class="fa fa-sign-out-alt"></i> Thoát</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-9 p-lg-3 left-side">
+                                @RenderBody()
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--popular-->
+        <!--high properties-->
+        <!--high properties-->
+        <!--featured-->
+        <!--featured-->
+        <!--Testimonial-->
+        <!--Testimonial-->
+    </div>
+    <!--footer-->
+    @Html.Action("_FooterLayout", "Home")
+    <!--copy-->
+    <script src="~/Resources/bootstrap-select-dropdown-with-search/js/bootstrap-select.min.js"></script>
+</body>
+
+</html>

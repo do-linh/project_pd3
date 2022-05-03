@@ -1,0 +1,396 @@
+﻿@model MotelManager.Models.EF.About
+@{
+    ViewBag.Title = "_HeaderLayout";
+    var session = (MotelManager.Common.UserLogin)Session[MotelManager.Common.CommonConstants.USER_SESSION];
+    List<MotelManager.Models.EF.TypeRE> types = ViewBag.type;
+    List<MotelManager.Models.EF.Notification> notifications = ViewBag.noti;
+    List<MotelManager.Models.EF.Notification> allnotifications = ViewBag.allnoti;
+}
+<style>
+    ul {
+        
+    }
+    .inline-nav {
+        float: left;
+        margin-left: 20px
+    }
+    .navbar-nav {
+        flex-direction: row;
+    }
+    a.dropdown-item{
+        margin-left: 10%;
+        margin-bottom: 10%;
+        color: darkblue
+    }
+    #dropdown-box{
+       min-width: 200px
+    }
+    .dropdown-menu {
+    }
+    hr{
+        margin: 5% auto
+    }
+    a.btn.btn-default {
+        background-color: white
+    }
+    .btn-submit {
+        background: #05222A;
+        color: #fff;
+        font-size: 1.5em;
+        border: none;
+        width: 100%;
+        outline: none;
+        -webkit-appearance: none;
+        padding: .5em 0;
+        transition: 0.5s all;
+        -webkit-transition: 0.5s all;
+        -moz-transition: 0.5s all;
+        -o-transition: 0.5s all;
+        margin-top: .5em;
+        font-family: 'Josefin Sans', sans-serif;
+    }
+    .count-notification {
+        margin-left: -10px
+    }
+    .notification-list {
+        width: 300px;
+        background-color: white;
+        float: right;
+        margin-top: -80px;
+        margin-right: 70px;
+        padding: 5px 10px 5px 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        z-index: 10
+    }
+    .show-notification{
+        display: block;
+    }
+    .hide-notification {
+        display: none;
+    }
+    .title-notification{
+        font-weight: bold;
+    }
+</style>
+<div class="header" id="home">
+    <div class="header-top">
+        <div class="container">
+            <div class="head-top">
+                <div class="indicate">
+                    <i class="fa fa-map-marker" id="local-top" aria-hidden="true"></i><a href="#">
+                        @Model.address
+                    </a>
+                </div>
+                <div class="deatils">
+                    <ul>
+                        @if (session == null)
+                        {
+                            <li>
+                                <i class="fas fa-sign-in-alt"></i>
+                                <a href="#" data-toggle="modal" data-target="#myModal">Sign In</a>
+                            </li>
+                            <li>
+                                <i class="fas fa-lock"></i>
+                                <a href="#" data-toggle="modal" data-target="#myModal1">Register</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <div class="dropdown">
+                                    <i class="fas fa-user"></i>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Xin chào! @session.FullName</a>
+                                    <i class="fa fa-caret-down" id="dropdown-item"></i>
+                                    <div class="dropdown-menu " id="dropdown-box">
+
+                                        <a class="dropdown-item" href="@Url.Action("CreatePost","UserManager")" style="margin-top: 2%"><i class="fa fa-pencil-alt"></i>Đăng tin mới</a>
+                                        <hr />
+                                        <a class="dropdown-item" href="@Url.Action("SavedPost","UserManager")"><i class="fa fa-heart"></i>Tin đã lưu</a>
+                                        <hr />
+                                        <a class="dropdown-item" href="@Url.Action("ListPostUser","UserManager")"><i class="fa fa-tasks"></i>Quản lý tin đăng</a>
+                                        <hr />
+                                        <a class="dropdown-item" href="/user/@session.UserName"><i class="fa fa-user"></i>Thông tin cá nhân</a>
+                                        <hr />
+                                        <a class="dropdown-item" href="@Url.Action("Logout","Account")"><i class="fa fa-sign-out-alt"></i>Thoát</a>
+                                    </div>
+
+                                </div>
+                            </li>
+
+                            <li>
+                                <a id="notification">
+                                    <i class="fas fa-bell"></i>
+                                    <span class="count-notification">@(notifications.Count() + allnotifications.Count())</span>
+                                </a>
+
+                            </li>
+
+                            <li>
+                                <a class="btn btn-default" href="@Url.Action("CreatePost","UserManager")" id="btn-create-post"><i class="fas fa-plus-circle"></i><p class="btn-posting" style="float: right">Đăng tin</p></a>
+                            </li>
+                            @*<li>
+                                    <i class="fa fa-sign-out-alt"></i>
+                                    <a href="@Url.Action("Logout","Account")">Logout</a>
+                                </li>*@
+                        }
+
+                    </ul>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="logo">
+                <h1 class="logo-text"><a href="@Url.Action("Index","Home")">Green Roof<span>Real Estate</span></a></h1>
+            </div>
+
+        </div>
+        <div class="notification-list" style="display: none" id="menu-notification">
+            <div class="container-notification">
+                @if (notifications.Count != 0)
+                {
+                    foreach (var item in notifications)
+                    {
+                        <div class="item-notification">
+                            <div class="title-notification">
+                                @item.notification_title
+                            </div>
+                            <div class="content-notification">
+                                @item.notification_content
+                            </div>
+                            <div>
+                                @item.created_date
+                            </div>
+                        </div>
+                        <hr />
+                    }
+                }
+                @if (allnotifications.Count != 0)
+                {
+                    foreach (var item in allnotifications)
+                    {
+                        <div class="item-notification">
+                            <div class="title-notification">
+                                @item.notification_title
+                            </div>
+                            <div class="content-notification">
+                                @Html.Raw(item.notification_content)
+                            </div>
+                            <div>
+                                @item.created_date.ToString().Substring(0, 10)
+                            </div>
+                        </div>
+                        <hr />
+                    }
+                }
+            </div>
+    </div>
+    </div>
+    
+    <div class="container">
+        <div class="header-bottom" style="width: 700px">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    @*<div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>*@
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="" @*id="bs-example-navbar-collapse-1"*@>
+                        <nav class="form-inline">
+                            <ul class="nav navbar-nav menu__list" style="float:left">
+                                <li class="menu__item menu__item--current">
+                                    <a href="index.html"
+                                       class="menu__link"><span class="menu__helper">Home</span></a>
+                                </li>
+                                <li class="menu__item inline-nav">
+                                    <a class="dropdown-toggle menu__link" data-toggle="dropdown" href="#">
+                                        <span class="menu__helper">Loại <b class="caret"></b></span>
+                                    </a>
+                                    <ul class="dropdown-menu" style="font-size: 15px">
+                                        @foreach (var item in types)
+                                        {
+                                            <li><a href="">@item.name</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                        @*<div class="social-icons">
+                                <a href="#"><i class="icon"></i></a>
+                                <a href="#"><i class="icon1"></i></a>
+                                <a href="#"><i class="icon2"></i></a>
+                                <a href="#"><i class="icon3"></i></a>
+                            </div>*@
+                        <div class="clearfix"></div>
+                    </div><!-- /.navbar-collapse -->
+                    <!-- /.container-fluid -->
+                </div>
+            </nav>
+
+        </div>
+    </div>
+</div>
+
+<!--signin-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-info">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body real-spa">
+                <div class="login-grids">
+                    <div class="login">
+                        <div class="login-right">
+                            @*@using (Html.BeginForm("", "", FormMethod.Post, new { @id = "form-login" }))
+                            {
+                                // @Html.AntiForgeryToken() 
+                                @Html.ValidationSummary(false, "", new { @class = "text-danger"});*@
+                                <h3>Sign In</h3>
+                                <span id="span-validate-login" style="color: red; font-weight: bold"></span>
+                                <input type="text" id="username" name="username" placeholder="Enter your UserName" required="">
+                                <input type="password" id="password" name="password" placeholder="Password" required="">
+                                <h4><a href="#">Forgot password</a> / <a href="#">Create new password</a></h4>
+                                <span class="text-danger" id="login-span"></span>
+
+                                <div class="single-bottom">
+                                    <input type="checkbox" id="brand" value="">
+                                    <label for="brand"><span></span>Remember Me.</label>
+                                </div>
+                                @*<input type="submit" id="btn-submit" value="Sign In">*@
+                                <button class="btn-submit" id="btn-submit">Sign In</button>
+                            @*}*@
+                        </div>
+                    </div>
+                    <p>
+                        By logging in you agree to our <a href="#">Terms</a> and <a href="#">Conditions</a> and <a href="#">Privacy Policy</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--signin-->
+<!--Register-->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-info">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body real-spa">
+                <div class="login-grids">
+                    <div class="login">
+                        <div class="login-right">
+                            @*<form action="#" id="form-register">*@
+                                <h3>Register </h3>
+                                <span id="span-register" style="color:red; font-weight:bold"></span>
+                                <input type="text" name="username" id="user-name-register" required="" placeholder="Nhập username">
+                                <input type="text" name="phone" id="phone-register" required="" placeholder="Nhập số điện thoại">
+                                <input type="text" name="email" id="email-register" required="" placeholder="Nhập email">
+                                <input type="password" name="password" id="password-register" required="" placeholder="Nhập mật khẩu">
+
+                                <button type="submit" class="btn-submit" id="btn-submit-register">Đăng ký ngay</button>
+                            @*</form>*@
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <p>
+                        By logging in you agree to our <a href="#">Terms</a> and <a href="#">Conditions</a> and <a href="#">Privacy Policy</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Register-->
+<script>
+    var btnCreatePost = $('#btn-create-post');
+    var formLogin = $('#form-login')
+    var btnSubmit = $('#btn-submit')
+    var username = $('#username')
+    var password = $('#password')
+    var spanLogin = document.getElementById('span-validate-login');
+
+    btnSubmit.click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "/Account/Login",
+            type: "POST",
+            data: { username: username.val(), password: password.val() },
+            success: function (res) {
+                if (res.Success == 1)
+                    window.location.href = "@Url.Action("Index","Home")"
+                else if (res.Success == 2)
+                    spanLogin.innerHTML = "Tài khoản không tồn tại"
+                else if (res.Success == 3)
+                    spanLogin.innerHTML = "Tài khoản của bạn đã bị khóa"
+                else if (res.Success == 4)
+                    spanLogin.innerHTML = "Mật khẩu sai"
+                else
+                    spanLogin.innerHTML = "Đăng nhập thất bại"
+            },
+            error: function () {
+                spanLogin.innerHTML = "Login fail!!!"
+            }
+        });
+    })
+    var usernameRe = $('#user-name-register');
+    var phoneRe = $('#phone-register');
+    var emailRe = $('#email-register');
+    var passRe = $('#password-register');
+    var btnSubmitRe = $('#btn-submit-register')
+    var spanRE = $('#span-register')
+
+    btnSubmitRe.click(function () {
+        if (usernameRe.val() == "" || phoneRe == "" || emailRe == "" || passRe == "")
+            spanRE.html("Nhập đầy đủ thông tin")
+        else {
+            $.ajax({
+                url: "/Account/Register",
+                    type: "POST",
+                    data: { username: usernameRe.val(), phone: phoneRe.val(), email: emailRe.val(), password: password.val() },
+                    success: function (res) {
+                        if (res.Success == 1) {
+                            swal("Tạo tài khoản thành công!", "", "success")
+                                .then(() =>{
+                                    $('#myModal1').modal('hide');
+                                    $('#myModal').modal('show');
+                                })
+                        }
+                        else if (res.Success == 2)
+                            spanRE.html("Tài khoản đã tồn tại")
+                        else if (res.Success == 3)
+                            spanRE.html("Email đã được đăng ký")
+                        else if (res.Success == 4)
+                            spanRE.html("Lỗi")
+                        else
+                            spanRE.html("Tạo tài khoản thất bại")
+                    },
+                error: function () {
+                    spanRE.html("Tạo tài khoản thất bại")
+                }
+            });
+        }
+    })
+    $('#notification').click(function () {
+        var x = document.getElementById("menu-notification");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    })
+    
+</script>

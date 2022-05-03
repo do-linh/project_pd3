@@ -1,0 +1,53 @@
+﻿@model MotelManager.Models.EF.Setting
+@{
+    ViewBag.Title = "EditPrice";
+}
+<form action="@Url.Action("EditPrice", "Dashboard")" method="post" id="form-edit">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Chỉnh sửa giá trị</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="">Min</label>
+                    <input type="number" name="min" class="form-control" value="@Model.min" placeholder="Nhập giá trị min">
+                </div>
+                <div class="col-md-6">
+                    <label for="">Max</label>
+                    <input type="number" name="max" class="form-control" value="@Model.max" placeholder="Nhập giá trị max">
+                </div>
+            </div>
+            <p style="margin-top: 10px">Trạng thái</p>
+            <select class="form-control" name="status">
+
+                @if (Model.status == true)
+                {
+                    <option value="true" selected>True</option>
+                    <option value="false">False</option>
+                }
+                else
+                {
+                    <option value="false" selected>False</option>
+                    <option value="true" >True</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit" id="btn-edit-submit" class="btn btn-primary">Chỉnh sửa</button>
+    </div>
+    <input value="@Model.setting_id" hidden name="setting_id"/>
+</form>
+<script>
+    $('#btn-edit-submit').click(function (e) {
+        e.preventDefault();
+        swal("Chỉnh sửa thành công", "", "success").then(() => {
+            $('#form-edit').submit();
+        })
+    })
+</script>

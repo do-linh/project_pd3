@@ -1,0 +1,92 @@
+﻿@model MotelManager.Models.SavedPost
+@{
+    ViewBag.Title = "SavedPost";
+    Layout = "~/Views/Shared/_LayoutFUser.cshtml";
+    List<MotelManager.Models.SavedPost> listtemp = ViewBag.listtemp;
+}
+<style>
+    .info-post {
+        margin-left: 0;
+    }
+
+    .icon > i {
+        font-size: 1.5em;
+        color: #02B875
+    }
+    .line{
+        margin-top: 10px
+    }
+</style>
+<h2>Bài viết đã lưu</h2>
+<hr class="line" />
+@if (listtemp == null)
+{
+    <p>Bạn không có bài viết đã lưu <a href="/">Trang chủ</a></p>
+}
+else
+{
+    <div class="row" id="show_bai_viet">
+        @foreach (var item in listtemp)
+        {   <div class="item">
+                <div class="card-post row">
+                    <div class="col-md-4 info-img">
+                        <a href="/Post/@item.slug">
+                            <img src="@item.image_post" class="image-post" width="250" height="200" />
+                        </a>
+                    </div>
+                    <div class="col-md-7 info-post">
+                        <a href="/Post/@item.slug">
+                            <label class="title">@item.title</label><br />
+                            <label class="sub-title">@item.sub_title</label><br />
+                            <label class="description">@(item.description.Length > 100 ? item.description.Substring(0, 100) + "..." : item.description)</label><br />
+                        </a>
+                    </div>
+                    <div class="col-md-1 icon">
+                        <i class="fas fa-heart heart-post btn-heart" data-id="1"></i>
+                        <span class="favorite_id" data-id="@item.favorite_id" hidden>@item.favorite_id</span>
+                    </div>
+                </div>
+                <hr class="line-post" />
+            </div>
+        }
+    </div>
+}
+<script>
+    var favorite_id = $('.favorite_id');
+    var btnHeart = $(".btn-heart")
+    var card = $(".item")
+    console.log(card);
+    for (let i = 0; i < btnHeart.length; i++) {
+        btnHeart[i].addEventListener("click", function (e) {
+            e.preventDefault()
+            var item = favorite_id[i].getAttribute('data-id');
+            console.log(item);
+            $.ajax({
+                type: 'post',
+                url: '/UserManager/RemovePostSave',
+                data: { favorite_id: item },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data.Message)
+                    if (data.Message == 'remove') {
+                        card[i].remove();
+                        if (card.length == 0) {
+                            $('#show_bai_viet').html = '<p>Bạn không có bài viết đã lưu <a href="/">Trang chủ</a></p>'
+                        }
+
+                    }
+                    else if(data.Message == 'error') {
+                        alert('Lỗi error!!!')
+                    }
+                    else
+                        alert('Lỗi server!!!' + data.Message)
+                },
+                error: function () {
+                    alert('Lỗi !!!')
+                }
+            })
+            
+        })
+    } 
+
+</script>

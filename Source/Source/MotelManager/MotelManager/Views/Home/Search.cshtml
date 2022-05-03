@@ -1,0 +1,170 @@
+﻿@model MotelManager.Models.EF.Post
+@{
+    ViewBag.Title = "Search";
+    List<MotelManager.Models.EF.Post> listSearch = ViewBag.listSearch;
+    List<MotelManager.Models.EF.Favorite> favorites = ViewBag.listfavorite;
+    var session = (MotelManager.Common.UserLogin)Session[MotelManager.Common.CommonConstants.USER_SESSION];
+    List<MotelManager.Models.EF.Post> listnew = ViewBag.listnew;
+}
+<style>
+    .heart-post {
+        font-size: 2em;
+        color: #02B875;
+    }
+
+    #user-id {
+        visibility: hidden
+    }
+
+    .right-side {
+        background-color: white;
+        padding: 10px;
+        border-radius: 10px;
+        border-style: outset;
+    }
+
+        .right-side > h2 {
+            font-size: 2em;
+            margin-top: 20px
+        }
+</style>
+<div class="popular-w3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9 p-lg-3 left-side">
+
+                <h2 class="text-left" style="margin-top: 20px; font-size:2em">Danh sách tìm kiếm</h2>
+                <div class="popular-grids" id="listbaiviet">
+                    <div class="row" id="show_bai_viet">
+                        @foreach (var item in listSearch)
+                        {
+
+                            int temp = 0;
+                            if (item.description.Length >= 150)
+                            {
+                                item.description = item.description.ToString().Substring(0, 150) + "...";
+                            }
+
+                            <div class="card-post row">
+                                <div class="col-md-4 info-img">
+                                    <a href="/Post/@item.slug">
+                                        <img src="@item.image_post" class="image-post" width="250" height="200" />
+                                    </a>
+                                </div>
+                                <div class="col-md-7 info-post">
+                                    <a href="@Url.Action("Detail","Post", new { slug = item.slug})">
+                                        <label class="title">@item.title</label><br />
+                                        <label class="sub-title">@item.sub_title</label><br />
+                                        <label class="description">@item.description</label><br />
+                                    </a>
+                                </div>
+                                <div class="col-md-1">
+                                    @if (favorites != null)
+                                    {
+                                        if (session != null)
+                                        {
+                                            <span id="user-id">@session.userID</span>
+                                            foreach (var item2 in favorites)
+                                            {
+                                                if (item2.post_id == item.post_id && item2.account_id == session.userID)
+                                                {
+                                                    <i class="fas fa-heart heart-post btn-heart" data-id="@item.post_id"></i>
+                                                    temp++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    @if (temp == 0)
+                                    {
+                                        <i class="far fa-heart heart-post btn-heart" data-id="@item.post_id"></i>
+                                    }
+                                </div>
+                            </div>
+                            <hr class="line-post" />
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 p-lg-3 right-side">
+                <h2 class="text-left ">Tin Mới Đăng</h2>
+                @foreach (var itemnew in listnew)
+                {
+                    <a style="color: black;" href="@Url.Action("Detail","Post", new { slug = itemnew.slug})">
+                        <div style="border: 1px solid #eee; border-radius: 5px; background-color: #eee; margin-bottom: 15px; margin-top: 10px;">
+                            <div style="padding: 5px 10px 5px 10px;">
+                                <label>
+                                    @{
+                                        if (itemnew.title.Length > 60)
+                                        {
+                                            @itemnew.title.Substring(0, 60)
+                                        }
+                                        else
+                                        {
+                                            @itemnew.title
+                                        }
+                                    }
+                                </label><br />
+                                @{
+                                    if (itemnew.sub_title.Length > 30)
+                                    {
+                                        <p>@itemnew.sub_title.Substring(0, 30) ...</p>
+                                    }
+                                    else
+                                    {
+                                        <p>@itemnew.sub_title</p>
+                                    }
+                                }
+                                <label style="color:#00deb6">Ngày Đăng: &nbsp;</label>@itemnew.created_date.ToString().Substring(0, 10)
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var userId = $("#user-id").text()
+    var btnHeart = $(".btn-heart")
+
+    for (let i = 0; i < btnHeart.length; i++) {
+        btnHeart[i].addEventListener("click", function (e) {
+            e.preventDefault()
+            var postId = btnHeart[i].getAttribute('data-id')
+
+            if (userId == "") {
+                swal("Bạn cần đăng nhập để lưu!", "", "warning");
+            }
+            else {
+                $.ajax({
+                    type: 'post',
+                    url: '/Post/SavePost',
+                    data: { post_id: postId, user_id: userId },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data.Message)
+                        if (data.Message == 'save') {
+                            swal("Bạn đã lưu bài!", "", "success");
+                            btnHeart[i].classList.remove("far")
+                            btnHeart[i].classList.add("fas")
+                        }
+                        else if (data.Message == 'remove') {
+                            swal("Bạn đã hủy lưu!", "", "info");
+                            btnHeart[i].classList.remove("fas")
+                            btnHeart[i].classList.add("far")
+                        }
+                        else
+                        {
+                            swal("Bạn đã hủy lưu!", "", "error");
+                        }
+
+                    },
+                    error: function () {
+                        swal("Bạn đã hủy lưu!", "", "error");
+                    }
+                })
+            }
+        })
+    }
+</script>

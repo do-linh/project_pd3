@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "WebsiteInfo";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    MotelManager.Models.EF.About about = ViewBag.about;
+}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Website Info</h1>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Cài đặt thông tin website</h6>
+    </div>
+    <form action="@Url.Action("EditInfo","Dashboard")" method="post" id="form-update">
+        <div class="card-body">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Thông tin website</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="about-description" name="about" placeholder="Thông tin về website">@about.about</textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Thông tin liên lạc</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="phone" value="@about.phone" placeholder="Thông tin liên lạc">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="email" value="@about.email" placeholder="Thông tin liên lạc">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Địa chỉ công ty</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="address" value="@about.address" placeholder="Địa chỉ công ty">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Thời gian bắt đầu</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="start_time" value="@about.start_time" placeholder="00:00">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Thời gian kết thúc</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="finish_time" value="@about.finish_time" placeholder="00:00">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Thời gian kết thúc</label>
+                <div class="col-sm-10">
+                    @if (about.iframe != null)
+                    {
+                        @Html.Raw(about.iframe)
+                    }
+                    <input type="text" class="form-control" name="iframe" value="@about.iframe" placeholder="Nhập địa chỉ iframe">
+                </div>
+            </div>
+            <input name="web_settings_id" value="@about.web_settings_id" hidden />
+            <button type="submit" class="btn btn-success btn-icon-split" id="update-info">
+                <span class="icon text-white-50">
+                    <i class="fas fa-check"></i>
+                </span>
+                <span class="text">Update</span>
+            </button>
+        </div>
+    </form>
+</div>
+<script src="~/Public/js/ckeditor/ckeditor.js"></script>
+<script src="~/Public/js/jquery-3.5.1.js"></script>
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#about-description'))
+        .catch(error => {
+            console.error(error);
+        });
+    var btnUpdate = $('#update-info')
+    //btnUpdate.click(function (e) {
+    //    e.preventDefault();
+    //    swal("Good job!", "You clicked the button!", "success")
+    //        .then(() => {
+    //            $('#form-update').submit();
+    //        })
+    //})
+</script>

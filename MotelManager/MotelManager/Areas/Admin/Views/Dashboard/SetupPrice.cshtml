@@ -1,0 +1,181 @@
+﻿
+@{
+    ViewBag.Title = "SetupPrice";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    List<MotelManager.Models.EF.Setting> settings = ViewBag.setupPrice;
+}
+@*<link href="~/Public/bootstrapv5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" media="all" />*@
+<style>
+    .btn-add{
+        margin-bottom: 20px
+    }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Cài đặt mức giá</h1>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Settings</h6>
+    </div>
+    <div class="card-body">
+        <div class="btn-add">
+            <button type="button" class="btn btn-primary btn-icon-split" data-toggle="modal" data-target="#Addmodal">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Thêm</span>
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="Addmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <form action="@Url.Action("AddPrice","Dashboard")" method="post">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Thêm giá trị</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="">Min</label>
+                                            <input type="number" name="min" class="form-control" placeholder="Nhập giá trị min">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="">Max</label>
+                                            <input type="number" name="max" class="form-control" placeholder="Nhập giá trị max">
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Min(triệu)</th>
+                        <th>Max(triệu)</th>
+                        <th>Status</th>
+                        <th>
+                            Thao tác
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in settings)
+                    {
+                        <tr>
+                            <td>@item.setting_id</td>
+                            <td>@item.min</td>
+                            <td>@item.max</td>
+                            <td>@if (item.status == true) { 
+                                    <span class="badge badge-primary">True</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary">False</span>
+                                }
+                            </td>
+                            <th>
+                                <a href="#" onclick="EditPrice(@item.setting_id)" class="btn btn-info btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                    <span class="text">Edit</span>
+                                </a>
+                                <a href="#" onclick="DelPrice(@item.setting_id)" class="btn btn-danger btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                    <span class="text">Del</span>
+                                </a>
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            
+        </div>
+    </div>
+</div>
+
+@*<script src="~/Public/js/jquery-3.5.1.js"></script>
+    <script src="~/Public/js/jquery.dataTables.min.js"></script>
+    <script src="~/Public/js/dataTables.bootstrap4.min.js"></script>*@
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>*@
+<script>
+    var DelPrice = function (setting_id) {
+        swal({
+            title: "Bạn có chắc muốn xóa?",
+            text: "Xóa mức giá với id: " + setting_id,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Đã xóa", {
+                        icon: "success",
+                    }).then(() => {
+                        $.ajax({
+                            type: 'post',
+                            url: '@Url.Action("DeletePrice","Dashboard")',
+                            data: { setting_id: setting_id },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.result == 'success') {
+                                    location.reload();
+                                }
+                                else if (data.result == 'error') {
+                                    swal("Lỗi hệ thống, Không thể gửi!", "", "error");
+                                }
+                                
+                            },
+                            error: function () {
+                                swal("Lỗi hệ thống", "", "error");
+                            }
+                        })
+                    })
+                } else {
+                    swal("Đã hủy");
+                }
+            });
+    }
+    var EditPrice = function (setting_id) {
+        $.ajax({
+            type: 'get',
+            url: '@Url.Action("EditPrice","Dashboard")',
+            data: { setting_id: setting_id },
+            success: function (data) {
+                $('#editModal .modal-content').html(data);
+                $('#editModal').modal('show');
+            },
+            error: function () {
+                swal("Lỗi hệ thống", "", "error");
+            }
+        })
+    }
+</script>

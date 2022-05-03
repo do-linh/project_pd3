@@ -1,0 +1,168 @@
+﻿
+@{
+    ViewBag.Title = "AddUser";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .btn-add {
+        margin-bottom: 20px
+    }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Add user</h1>
+</div>
+<div class="card shadow mb-4">
+    <form action="@Url.Action("AddUser","AccountAdmin")" method="post" id="add-user" enctype = "multipart/form-data">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">User</h6>
+        </div>
+        <div class="card-body">
+            <div class="mb-3 row">
+                <label for="" class="col-sm-2 col-form-label">Username</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Nhập username">
+                    <span id="span-username" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" name="password" placeholder="Nhập password">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Nhập email">
+                    <span id="span-email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="" class="col-sm-2 col-form-label">Phone</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="phone" placeholder="Nhập số điện thoại">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="" class="col-sm-2 col-form-label">Họ và tên</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="fullname" placeholder="Nhập họ và tên">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="" class="col-sm-2 col-form-label">Vai trò</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="role">
+                        <option value="user" selected>--Chọn vai trò--</option>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="" class="col-sm-2 col-form-label">Giới tính</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="sex">
+                        <option value="khac" selected>--Chọn giới tính--</option>
+                        <option value="nam">Nam</option>
+                        <option value="nu">Nữ</option>
+                        <option value="khac">Khác</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="" class="col-sm-2 col-form-label">Status</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="status">
+                        <option value="true" selected>--Chọn trạng thái--</option>
+                        <option value="true">Active</option>
+                        <option value="false">Block</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="" class="col-sm-2 col-form-label">Quyền hạn</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="authority">
+                        <option value="3" selected>--Chọn quyền hạn--</option>
+                        <option value="1">All</option>
+                        <option value="2">Post</option>
+                        <option value="3">View</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="email" class="col-sm-2 col-form-label">Ảnh đại diện: </label>
+                <div class="col-sm-10">
+                    <div class="flex-column image-cropper">
+                        <div class="avatar-detail"><img id="avatar" src="~/Public/images/avatar/avartarDefault.jpg" width="200" height="200" /></div>
+                    </div>
+                    <label for="upload-image" class="btn btn-info btn-upload" style="cursor: pointer;">Chọn ảnh</label>
+                    <input type="file" name="ImageUpload" hidden class="btn btn-info " id="upload-image" onchange="ShowImagePreview(this, document.getElementById('avatar'))" />
+                </div>
+            </div>
+            <div class="btn-add">
+                <button type="submit" class="btn btn-primary btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Thêm</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="~/Areas/Admin/Resources/vendor/jquery/jquery.min.js"></script>
+<script src="~/Public/bootstrapv5/js/script.js"></script>
+
+<script>
+    var inputUsername = $('#username')
+    inputUsername.blur(function () {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("CheckUsername", "AccountAdmin")',
+            data: { username: inputUsername.val() },
+            dataType: 'json',
+            success: function (data) {
+                if (data.result == 'allow') {
+                    $('#span-username').html("")
+                }
+                else if (data.result == 'deny') {
+                    $('#span-username').html("username đã tồn tại")
+                }
+                else {
+                    swal("Lỗi hệ thống", "", "error");
+                }
+            },
+            error: function () {
+                swal("Lỗi hệ thống", "", "error");
+            }
+        })
+    })
+    var inputEmail = $('#email')
+    console.log(inputEmail.val())
+    inputEmail.blur(function () {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("CheckEmail", "AccountAdmin")',
+            data: { email: inputEmail.val() },
+            dataType: 'json',
+            success: function (data) {
+                if (data.result == 'allow') {
+                    $('#span-email').html("")
+                }
+                else if (data.result == 'deny') {
+                    $('#span-email').html("email đã được đăng ký")
+                }
+                else {
+                    swal("Lỗi hệ thống", "", "error");
+                }
+            },
+            error: function () {
+                swal("Lỗi hệ thống", "", "error");
+            }
+        })
+    })
+</script>

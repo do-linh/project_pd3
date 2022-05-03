@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Home Plat a Real Estates and Builders Category Flat Bootstrap Responsive Web Template | Home :: w3layouts
+    </title>
+    <!--css-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    @*<link href="~/Public/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />*@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link href="~/Public/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!--css-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Home Plat Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    @*<link rel="stylesheet" href="~/Public/css/flexslider.css" type="text/css" media="screen" />*@
+    <!--js-->
+    <script src="~/Public/js/jquery.min.js"></script>
+    @*<script src="~/Public/js/bootstrap.min.js"></script>*@
+    <!--js-->
+    <!--webfonts-->
+    @*<link href='//fonts.googleapis.com/css?family=Josefin+Sans:400,700italic,700,600italic,600,400italic,300italic,300,100italic,100'
+          rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'
+          rel='stylesheet' type='text/css'>*@
+    <!--webfonts-->
+    <!--Icon-->
+    <script src="https://kit.fontawesome.com/6df9eee8ba.js" crossorigin="anonymous"></script>
+    <!--Main style-->
+    <link href="~/Public/css/main.style.css" rel="stylesheet" />
+    @*<script src="~/Public/js/responsiveslides.min.js"></script>*@
+    @*<script>
+            $(function () {
+                $("#slider").responsiveSlides({
+                    auto: true,
+                    nav: true,
+                    speed: 500,
+                    namespace: "callbacks",
+                    pager: true,
+                });
+            });
+        </script>
+        <link href="~/Public/css/owl.carousel.css" rel="stylesheet">
+        <script src="~/Public/js/owl.carousel.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#owl-demo").owlCarousel({
+                    items: 1,
+                    lazyLoad: true,
+                    autoPlay: true,
+                    navigation: false,
+                    navigationText: false,
+                    pagination: true,
+                });
+            });
+        </script>*@
+</head>
+
+<body>
+    <!--header-->
+    @Html.Action("_HeaderLayout", "Home")
+    <!--header-->
+    <!--banner-->
+    <!--banner-->
+    <div class="content content-background">
+        <div class="popular-w3">
+            <div class="container">
+                @RenderBody()
+            </div>
+        </div>
+        <!--popular-->
+        <!--high properties-->
+        <!--high properties-->
+        <!--featured-->
+        <!--featured-->
+        <!--Testimonial-->
+        <!--Testimonial-->
+    </div>
+    <!--footer-->
+    @Html.Partial("_FooterFDetail")
+    <!--copy-->
+    @*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
+</html>

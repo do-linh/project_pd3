@@ -1,0 +1,238 @@
+﻿
+@{
+    ViewBag.Title = "_SearchLayout";
+    List<MotelManager.Models.EF.City> cites = ViewBag.city;
+    List<MotelManager.Models.EF.TypeRE> types = ViewBag.type;
+    List<MotelManager.Models.EF.Setting> setting = ViewBag.setting;
+}
+<style>
+    .serach-w3agile{
+        padding-top: 0;
+        padding-bottom: 30px;
+    }
+    .place-grid:nth-child(6) {
+        margin-top: 1.6em;
+    }
+    .btn-search {
+        width: 100%;
+        background: #05222A;
+        border: none;
+        outline: none;
+        color: #fff;
+        padding: .4em;
+        font-size: 1em;
+    }
+    .btn-price{
+        background-color: #FFF;
+        height: 34px;
+        border: 0 #FFF;
+        border-radius: 3px;
+        color: #999999;
+        width: 100%;
+    }
+    .icon-arrow{
+        margin-top: 7px;
+        margin-left: -6px
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield; /* Firefox */
+    }
+    .item {
+        margin-left: 5px
+    }
+    .btn-item{
+        width: 93%;
+        height: 34px;
+        border: 0 white;
+        background-color: white;
+    }
+    #submit-price {
+        width: 93%;
+        height: 34px;
+        border: 0 white;
+        color: white;
+        background-color: #02B875;
+    }
+    #submit-price:hover{
+        font-weight:bold
+    }
+    .btn-item:hover {
+        background-color: #02B875;
+    }
+    .text-left {
+        text-align: left !important;
+    }
+</style>
+<form action="@Url.Action("Search","Home")" method="post">
+    <div class="serach-w3agile">
+        <div class="container">
+            <div class="place-grids">
+                <div class="col-md-2 place-grid">
+                    <h5>Thành phố/Tỉnh</h5>
+                    <select class="selectpicker" id="city-search" data-width="100%" data-live-search="true" name="city_id">
+                        <option value="" data-tokens="" selected>--Chọn thành phố--</option>
+                        @foreach (var item in cites)
+                        {
+                            <option value="@item.city_id" data-tokens="@item.name">@item.name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 place-grid">
+                    <h5>Quận/Huyện</h5>
+                    <select class="selectpicker" id="district-search" data-width="100%" data-live-search="true" name="district_id">
+                        <option value="" data-tokens="" selected>--Chọn quận--</option>
+                    </select>
+                </div>
+                <div class="col-md-2 place-grid">
+                    <h5>Phường/Xã</h5>
+                    <select class="selectpicker" id="sub-district-search" data-width="100%" data-live-search="true" name="sub_district_id">
+                        <option value="" data-tokens="" selected>--Chọn phường--</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 place-grid">
+                    <h5>Mức Giá</h5>
+                    <div class="dropdown" id="dropdown-price">
+                        <button class="btn-price text-left" type="button" id="dropdownMenuButton">
+                            --Chọn mức giá--
+                        </button>
+                        <div class="dropdown-menu" style="width: 240px">
+                            <div class="row item">
+                                <div class="col-md-5" style="padding: 0">
+                                    <input type="number" class="form-control" id="price-min" name="price_min" min="0" />
+                                </div>
+                                <div class="col-md-1 icon-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                                <div class="col-md-5" style="padding: 0">
+                                    <input type="number" class="form-control" id="price-max" name="price_max" min="0" />
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row item">
+                                @foreach (var item in setting)
+                                {
+                                    if (item.min == 0)
+                                    {
+                                        <button class="btn-item" data-min="@item.min" data-max="@item.max">< @item.max triệu </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn-item" data-min="@item.min" data-max="@item.max">@item.min <i class="fas fa-arrow-right" style="font-size: 0.7em"></i> @item.max triệu</button>
+                                    }
+                                }
+                                <button id="submit-price">Áp dụng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2 place-grid">
+                    <h5>Loại</h5>
+                    <select class="selectpicker" data-width="100%" name="type">
+                        <option value="">--Chọn loại--</option>
+                        @foreach (var item in types)
+                        {
+                            <option value="@item.type_real_estate_id">@item.name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 place-grid">
+                    <input class="btn-search" type="submit" id="btn btn-search" value="Tìm kiếm">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    var citySearch = $('#city-search')
+    /*citySearch.find(":selected").val()*/
+    var btnSearch = $('#btn-search')
+    var districtSearch = $('#district-search');
+    var subDSearch = $('#sub-district-search')
+
+
+    citySearch.change(function () {
+        var city_id = citySearch.find(":selected").val()
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetDistrictByIdCity",
+            data: { city_id: city_id },
+            dataType: "json",
+            success: function (res) {
+                if (res.length == 0) {
+                    districtSearch.html('<option value="" data-tokens="">Không tìm thấy dữ liệu</option>')
+                    $('.selectpicker').selectpicker('refresh');
+                }
+                else {
+                    districtSearch.html('<option value="" data-tokens="" selected>--Chọn quận--</option>')
+                    $('.selectpicker').selectpicker('refresh');
+                    $.each(res, function (index, value) {
+                        districtSearch.append('<option value="' + value.district_id + '" data-tokens="' + value.name + '">' + value.name + '</option>')
+                        $('.selectpicker').selectpicker('refresh');
+                    })
+                }
+            }
+        })
+    })
+
+    districtSearch.change(function () {
+        var district_id = districtSearch.find(":selected").val()
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetSubDistrictByIdD",
+            data: { district_id: district_id },
+            dataType: "json",
+            success: function (res) {
+                if (res.length == 0) {
+                    subDSearch.html('<option value="" data-tokens="">Không tìm thấy dữ liệu</option>')
+                    $('.selectpicker').selectpicker('refresh');
+                }
+                else {
+                    subDSearch.html('<option value="" data-tokens="" selected>--Chọn phường--</option>')
+                    $('.selectpicker').selectpicker('refresh');
+                    $.each(res, function (index, value) {
+                        subDSearch.append('<option value="' + value.sub_district_id + '" data-tokens="' + value.name + '">' + value.name + '</option>')
+                        $('.selectpicker').selectpicker('refresh');
+                    })
+                }
+            }
+        })
+    })
+    var btnPrice = $('#dropdownMenuButton')
+    btnPrice.click(function () {
+       $('#dropdown-price').addClass("open")
+    })
+    var price = $('.btn-item')
+    var priceMin = $('#price-min')
+    var priceMax = $('#price-max')
+    var btnPrice = $('#submit-price')
+    var resPrice = $('#dropdownMenuButton')
+    for (let i = 0; i < price.length; i++) {
+        price[i].addEventListener('click', function (e) {
+            e.preventDefault()
+            priceMin.attr('value', price[i].getAttribute('data-min'))
+            priceMax.attr('value', price[i].getAttribute('data-max'))
+            btnPrice.click(function (e) {
+                e.preventDefault()
+                resPrice.html(price[i].getAttribute('data-min') + '  <i class="fas fa-arrow-right"></i>  ' + price[i].getAttribute('data-max') + 'triệu')
+                $('#dropdown-price').removeClass("open")
+            })
+        })
+    }
+    window.addEventListener('click', function (e) {
+        if (document.getElementById('dropdown-price').contains(e.target)) {
+            // Clicked in box
+        } else {
+            $('#dropdown-price').removeClass("open")
+        }
+    });
+</script>

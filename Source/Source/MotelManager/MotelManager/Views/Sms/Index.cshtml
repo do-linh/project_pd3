@@ -1,0 +1,105 @@
+﻿@model MotelManager.Models.EF.Account
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutFUser.cshtml";
+    var session = (MotelManager.Common.UserLogin)Session[MotelManager.Common.CommonConstants.USER_SESSION];
+}
+<style>
+    hr{
+        margin-top:10px
+    }
+</style>
+<h2>Xác thực số điện thoại</h2>
+<hr class="line-h2" />
+<span id="username" data-phone="@(Model.phone == null ? "" : Model.phone)" hidden>@session.UserName</span>
+<div class="form-group row" style="margin-top: -20px">
+    <label for="phone" class="col-sm-2 col-form-label">Số điên thoại: </label>
+    <div class="col-sm-10">
+        <input type="text" name="phone" id="phone-input" class="form-control" placeholder="Nhập số điện thoại" value="@(Model.phone == null ? "" : Model.phone)" required>
+        <span class="text-warning" id="span-validate-phone"></span><br />
+        <input class="btn btn btn-primary" @*onclick="sendOTP()"*@ id="btn-send" type="button" value="Gửi mã xác nhận" />
+    </div>
+</div>
+<div class="form-group row">
+    <label for="phone" class="col-sm-2 col-form-label">Nhập mã xác nhận: </label>
+    <div class="col-sm-10">
+        <input class="col-md-9 form-control" type="text" id="OTPCode" placeholder="EnterOTP" required />
+        <span class="text-warning" id="span-validate-otp"></span><br />
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-2"></div>
+    <div class="col-md-10">
+        <p class="text-danger" id="verifyOTP"></p>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="phone" class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-10">
+        <button class="buttonComfirm btn btn-primary" id="btnSubmit" disabled>
+            <i class="loading-icon fas fa-spinner fa-spin hide"></i>
+            <span class="btn-txt">Xác nhận</span>
+        </button>
+        <a href="/user/@session.UserName" id="btn-back" class="btn btn-primary" style="display: none">Quay lại</a>
+    </div>
+</div>
+<script>
+    var phoneInput = $('#phone-input')
+    var span = $('#span-validate-phone')
+    var spanotp = $('#span-validate-otp')
+    var btnSubmit = $('#btnSubmit')
+    var btnSendOtp = $('#btn-send')
+    var otpInput = $('#OTPCode')
+    var username = $('#username')
+
+    if (username.attr('data-phone')) {
+        phoneInput.attr('disabled', 'disabled')
+    }
+
+    otpInput.blur(function (e) {
+        if (otpInput.val() == '') {
+            spanotp.html('Vui lòng nhập mã xác nhận')
+        }
+        else {
+            try {
+                if (!Number.isInteger((parseInt(otpInput.val()))))
+                    spanotp.html('Vui lòng nhập mã xác nhận là số')
+                else {
+                    /*verifyOTP()*/
+                    spanotp.html('')
+                    btnSubmit.removeAttr('disabled')
+                }
+            } catch {
+                spanotp.html('Vui lòng nhập mã xác nhận là số')
+            }
+
+        }
+    })
+    btnSubmit.click(function (e) {
+        verifyOTP(username.text())
+    })
+    btnSendOtp.click(function (e) {
+        //sendOTP.setAttribute('value', 'Gửi lại mã xác nhận');
+        if (phoneInput.val() == "")
+            span.html("Vui lòng nhập số điện thoại")
+        else {
+            sendOTP()
+            btnSendOtp.attr('value', 'Gửi lại mã xác nhận');
+            btnSendOtp.removeClass('btn-primary').addClass('btn-warning')
+        }
+    })
+
+
+        //$(document).ready(function () {
+        //    $(".buttonComfirm").on("click", function () {
+        //        $(".result").text("");
+        //        $(".loading-icon").removeClass("hide");
+        //        $(".buttonComfirm").attr("disabled", true);
+        //        $(".btn-txt").text("Loading...");
+
+        //        $("#btnSubmit").show();
+        //        $("#btnSubmit1").hide();
+        //    });
+        //});
+</script>
+<script src="~/Public/bootstrapv5/js/smsverification.js"></script>

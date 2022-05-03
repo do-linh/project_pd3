@@ -1,0 +1,168 @@
+﻿
+@{
+    ViewBag.Title = "ListNoitification";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    List<MotelManager.Models.EF.Notification> notifications = ViewBag.noti;
+}
+
+<style>
+    .btn-add {
+        margin-bottom: 20px
+    }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">List Notification</h1>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Notification</h6>
+    </div>
+    <div class="card-body"> 
+        <div class="btn-add">
+            <a href="@Url.Action("AddNotification","Notification")" class="btn btn-primary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Thêm</span>
+            </a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Mã thông báo</th>
+                        <th>Tiêu đề</th>
+                        <th>Nội dung</th>
+                        <th>Ngày gửi</th>
+                        <th>Trạng thái</th>
+                        <th>
+                            Người nhận
+                        </th>
+                        <th>
+                            Thao tác
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in notifications)
+                    {
+                        <tr>
+                            <td>@item.notification_id</td>
+                            <td>@item.notification_title</td>
+                            <td>@item.notification_content</td>
+                            <td>@item.created_date.ToString().Substring(0, 10)</td>
+                            <td>
+                                @if (item.status == 1)
+                                {
+                                    <span class="badge badge-primary">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary">Closed</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.account_id == 0)
+                                {
+                                    <span class="badge badge-primary">ALL</span>
+                                }
+                                else
+                                {
+                                    @item.Account.username
+                                }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("EditNotification","Notification", new {notification_id = item.notification_id })" class="btn btn-info btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                    <span class="text">Edit</span>
+                                </a>
+                                <button onclick="DelNotificate(@item.notification_id)" class="btn btn-danger btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                    <span class="text">Del</span>
+                                </button>
+                                @if (item.status == 1)
+                                {
+                                    <a href="#" class="btn btn-success btn-icon-split" onclick="ChangeStatus(@item.notification_id)">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text">Active</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="#" class="btn btn-warning btn-icon-split" onclick="ChangeStatus(@item.notification_id)">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </span>
+                                        <span class="text">Closed</span>
+                                    </a>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="~/Public/js/jquery-3.5.1.js"></script>
+<script>
+    var DelNotificate = function (notification_id) {
+        swal({
+            title: "Bạn có chắc muốn xóa?",
+            text: "Xóa thông báo với id là: " + notification_id,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Đã xóa", {
+                        icon: "success",
+                    }).then(() => {
+                        $.ajax({
+                            type: 'post',
+                            url: '@Url.Action("DeleteNotification", "Notification")',
+                            data: { notification_id: notification_id },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.result == 'success') {
+                                    location.reload();
+                                }
+                            },
+                            error: function () {
+                                swal("Lỗi hệ thống", "", "error");
+                            }
+                        })
+                    })
+                } else {
+                    swal("Đã hủy");
+                }
+            });
+    }
+    var ChangeStatus = function (notification_id) {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("ChangeStatus", "Notification")',
+            data: { notification_id: notification_id },
+            success: function (data) {
+                if (data.result == 'success') {
+                    swal("Đã xử lý", "", "success").then(() => {
+                        location.reload();
+                    })
+                }
+            },
+            error: function () {
+                swal("Lỗi", "", "error")
+            }
+
+        })
+    }
+</script>

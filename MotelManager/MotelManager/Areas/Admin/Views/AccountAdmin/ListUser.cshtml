@@ -1,0 +1,148 @@
+﻿
+@{
+    ViewBag.Title = "ListUser";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .btn-add {
+        margin-bottom: 20px
+    }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">List user</h1>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables User</h6>
+    </div>
+    <div class="card-body">
+        <div class="btn-add">
+            <a class="btn btn-primary btn-icon-split" href="@Url.Action("AddUser","AccountAdmin")">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Thêm</span>
+            </a>
+
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>FullName</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Premission</th>
+                        <th>
+                            Thao tác
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr> 
+                            <td>@item.username<span id="@item.username" hidden>@item.username</span></td>
+                            <td>@item.email</td>
+                            <td>@item.fullname</td>
+                            <td>
+                                @if (item.role == "admin")
+                                {
+                                    <span class="badge badge-primary">Admin</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary">User</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.status == true)
+                                {
+                                    <span class="badge badge-primary">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger">Blocked</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.authority == 1)
+                                {
+                                    <span class="badge badge-primary">All</span>
+                                }
+                                else if (item.authority == 2)
+                                {
+                                    <span class="badge badge-info">Post</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary">View</span>
+                                }
+                            </td>
+                            <th>
+                                <a href="@Url.Action("EditUser","AccountAdmin", new { user_id = item.account_id})" class="btn btn-info btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                    <span class="text">Edit</span>
+                                </a>
+                                <a href="#" onclick="DelUser(@item.username)" class="btn btn-danger btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                    <span class="text">Del</span>
+                                </a>
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    var DelUser = function (username) {
+        console.log(username)
+        swal({
+            title: "Bạn có chắc muốn xóa?",
+            text: "Xóa tài khoản với username: " + username.innerText,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Đã xóa", {
+                        icon: "success",
+                    }).then(() => {
+                        $.ajax({
+                            type: 'post',
+                            url: '@Url.Action("DeleteUser", "AccountAdmin")',
+                            data: { username: username.innerText },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.result == 'success') {
+                                    location.reload();
+                                }
+                                else if (data.result == 'error') {
+                                    swal("Lỗi hệ thống, Không thể xóa!", "", "error");
+                                }
+                                else {
+                                    swal("Không thể xóa tài khoản admin duy nhất!", "", "error");
+                                }
+
+                            },
+                            error: function () {
+                                swal("Lỗi hệ thống", "", "error");
+                            }
+                        })
+                    })
+                } else {
+                    swal("Đã hủy");
+                }
+            });
+    }
+</script>

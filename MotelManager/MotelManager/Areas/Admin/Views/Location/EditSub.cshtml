@@ -1,0 +1,54 @@
+﻿
+@model MotelManager.Models.EF.SubDistrict
+@{
+    List<MotelManager.Models.EF.District> districts = ViewBag.districts;
+}
+
+<form action="@Url.Action("EditSub","Location")" method="post">
+    <div class="">
+        <div class="form-group">
+            <label for="">Tên phường/xã</label>
+            <input type="text" name="name" id="district-name-edit" class="form-control" value="@Model.name" placeholder="Nhập tên thành phố">
+        </div>
+        <label for="">Tên thành phố phụ thuộc</label>
+        <select class="selectpicker" data-width="100%" data-live-search="true" name="district_id">
+            <option value="" data-tokens="" selected>--Chọn quận--</option>
+            @foreach (var item in districts)
+            {
+                if (item.city_id == Model.district_id)
+                {
+                    <option value="@item.district_id" selected>@item.name</option>
+                }
+                else
+                {
+                    <option value="@item.district_id">@item.name</option>
+                }
+            }
+        </select>
+        <div class="form-group">
+            <label for="">Slug</label>
+            <input type="text" disabled id="slug-name-edit" name="slug" value="@Model.slug" class="form-control" placeholder="Nhập tên thành phố">
+        </div>
+        <input value="@Model.sub_district_id" name="sub_district_id" id="edit-id" hidden />
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" id="btn-update-city" class="btn btn-primary">Update</button>
+        </div>
+
+    </div>
+</form>
+<script>
+    var inputNameEdit = $('#district-name-edit');
+    inputNameEdit.change(function () {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("CheckSlugDistrict", "Location")',
+            data: { name: inputNameEdit.val() },
+            dataType: 'json',
+            success: function (data) {
+               /* $('input[name="slug"]').val(data.result);*/
+                $('#slug-name-edit').attr('value', data.result);
+            }
+        })
+    })
+</script>

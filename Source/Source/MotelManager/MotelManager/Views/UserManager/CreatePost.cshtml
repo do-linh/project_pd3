@@ -1,0 +1,540 @@
+﻿
+@{
+    ViewBag.Title = "CreatePost";
+    Layout = "~/Views/Shared/_LayoutFUser.cshtml";
+    var listDistrict = ViewBag.listDistrict;
+    var listCity = ViewBag.listCity;
+    var listSub_District = ViewBag.listSubDistrict;
+    var listType = ViewBag.listType;
+    var user = ViewBag.User;
+}
+<link rel="stylesheet" href="~/Public/css/createPostCss.css" />
+<style>
+    .line {
+        margin-top: 10px
+    }
+
+    form {
+        margin-bottom: 30px
+    }
+
+    @@import url(https://fonts.googleapis.com/css?family=Open+Sans:700,300);
+
+    .frame {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 400px;
+        height: 400px;
+        margin-top: -200px;
+        margin-left: -200px;
+        border-radius: 2px;
+        box-shadow: 4px 8px 16px 0 rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        background: linear-gradient(to top right, darkmagenta 0%, hotpink 100%);
+        color: #333;
+        font-family: "Open Sans", Helvetica, sans-serif;
+    }
+    .ck-editor__editable {
+        min-height: 250px;
+    }
+    .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 260px;
+        border-radius: 3px;
+        box-shadow: 8px 10px 15px 0 rgba(0, 0, 0, 0.2);
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-direction: column;
+    }
+
+    .title {
+        width: 100%;
+        height: 50px;
+        border-bottom: 1px solid #999;
+        text-align: center;
+    }
+
+    /*h1 {
+        font-size: 16px;
+        font-weight: 300;
+        color: #666;
+    }*/
+
+    .dropzone {
+        width: 100px;
+        height: 90px;
+        border: 1px dashed #999;
+        border-radius: 3px;
+        text-align: center;
+        margin-right: 30px;
+        padding: 0
+    }
+
+    .upload-icon {
+        margin: 25px 2px 2px 2px;
+    }
+
+    .upload-input {
+        position: relative;
+        top: -62px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+
+
+    .upload-icon {
+        margin: 0
+    }
+
+    .custom-file {
+        position: relative;
+        font-family: arial;
+        overflow: hidden;
+        margin-bottom: 10px;
+        width: auto;
+        display: inline-block;
+        padding: 10px;
+    }
+
+    .custom-file-input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        opacity: 0;
+        z-index: 100;
+    }
+
+    .custom-file img {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+
+    ul.file-list {
+        font-family: arial;
+        list-style: none;
+        padding: 0;
+    }
+
+    ul.file-list li {
+        border-bottom: 1px solid #ddd;
+        padding: 5px;
+    }
+
+    .remove-list {
+        cursor: pointer;
+        margin-left: 10px;
+    }
+
+    .btn-iframe {
+        border: 0;
+        background-color: white;
+    }
+    /* Slideshow container */
+    .slideshow-container {
+      max-width: 1000px;
+      position: relative;
+      margin: auto;
+    }
+
+    /* Next & previous buttons */
+    .prev, .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin-top: -22px;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+        background-color: #b2bec3;
+    }
+
+    /* Position the "next button" to the right */
+    .next {
+      right: 0;
+      border-radius: 3px 0 0 3px;
+    }
+
+    /* On hover, add a black background color with a little bit see-through */
+    .prev:hover, .next:hover {
+      background-color: rgba(0,0,0,0.8);
+    }
+
+    /* Caption text */
+    .text-image {
+        color: #f2f2f2;
+        font-size: 1.5em;
+        padding: 8px 12px;
+        position: absolute;
+        bottom: 8px;
+        width: 100%;
+        background-color: #02B875
+    }
+
+    /* Number text (1/3 etc) */
+    .numbertext {
+      color: #f2f2f2;
+      font-size: 12px;
+      padding: 8px 12px;
+      position: absolute;
+      top: 0;
+    }
+
+    /* The dots/bullets/indicators */
+    .dot {
+      cursor: pointer;
+      height: 15px;
+      width: 15px;
+      margin: 0 2px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.6s ease;
+    }
+
+    .active, .dot:hover {
+      background-color: #717171;
+    }
+
+    /* Fading animation */
+    .fade {
+      -webkit-animation-name: fade;
+      -webkit-animation-duration: 1.5s;
+      animation-name: fade;
+      animation-duration: 1.5s;
+    }
+
+    @@-webkit-keyframes fade {
+      from {opacity: .4}
+      to {opacity: 1}
+    }
+
+    @@keyframes fade {
+      from {opacity: .4}
+      to {opacity: 1}
+    }
+
+    /* On smaller screens, decrease text size */
+    @@media only screen and (max-width: 300px) {
+      .prev, .next,.text {font-size: 11px}
+    }
+    .hide-iframe{
+        display: none;
+    }
+    .show-iframe {
+        display: block;
+    }
+    #btn-close-tutorial{
+        cursor: pointer;
+    }
+</style>
+<h2>Đăng tin mới</h2>
+<hr class="line" />
+<script src="~/Public/bootstrapv5/js/script.js"></script>
+@using (Html.BeginForm("CreatePost", "UserManager", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        <h2 style="font-size: 1.5em">Địa chỉ cho thuê</h2>  <br />
+        <div class="row">
+            <div class="col-md-4">
+                <label for="">Tỉnh/Thành phố</label>
+                <select class="selectpicker" id="city-search" data-width="100%" data-live-search="true" name="city_id">
+                    <option value="" data-tokens="" selected>--Chọn thành phố--</option>
+                    @foreach (var item in listCity)
+                    {
+                        <option value="@item.city_id">@item.name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="">Quận/Huyện</label>
+                <select class="selectpicker" id="district-search" data-width="100%" data-live-search="true" name="district_id">
+                    <option value="" data-tokens="" selected>--Chọn quận--</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="">Phường/Xã</label>
+                <select class="selectpicker" id="sub-district-search" data-width="100%" data-live-search="true" name="sub_district_id">
+                    <option value="" data-tokens="" selected>--Chọn phường--</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="">Số nhà</label>
+        <input type="text" class="form-control" name="address" placeholder="Nhập số nhà của bạn">
+    </div>
+    <div class="form-group">
+        <label for="">Nhập địa điểm / iframe</label>
+        <input type="text" class="form-control" name="iframe" placeholder="Nhập iframe">
+        <div class="row">
+            <div class="col-md-6">
+                <span class="span-iframe"><button id="btn-iframe" data-toggle="modal" data-target="#exampleModalCenter" class="btn-iframe">Xem hướng dẫn</button></span>
+            </div>
+            <div class="col-md-6 hide-iframe" id="btn-close-tutorial" style="text-align: right; font-weight: bold">
+                X
+            </div>
+        </div>
+    </div>
+    <div class="iframe-tutorial hide-iframe" id="image-tutorial">
+        <a href="https://www.google.com/maps/" target="_blank">Link google map</a>
+
+        <div class="slideshow-container" style="display: block">
+            <div class="mySlides ">
+                <div class="numbertext">1 / 3</div>
+                <img src="~/Public/images/tutorial/iframe1.jpg" style="width:100%">
+                <div class="text-image">Truy cập vào link google map ở trên và tim kiếm địa điểm của bạn</div>
+            </div>
+
+            <div class="mySlides ">
+                <div class="numbertext">2 / 3</div>
+                <img src="~/Public/images/tutorial/iframe2.jpg" style="width:100%">
+                <div class="text-image">Sau khi tìm kiếm địa điểm của bạn hãy nhấn vào nút chia sẻ</div>
+            </div>
+
+            <div class="mySlides ">
+                <div class="numbertext">3 / 3</div>
+                <img src="~/Public/images/tutorial/iframe3.jpg" style="width:100%">
+                <div class="text-image">Chọn tab nhúng bản đồ sau đó nhấn vào sao chép HTML và dán vào ô địa chỉ</div>
+            </div>
+
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+        </div>
+        <br>
+
+        <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+    </div>
+    <h2 style="font-size: 1.5em">Thông tin mô tả</h2>
+    <br />
+    <div class="form-group">
+        <label for="">Loại cho thuê</label>
+        <select class="form-control" aria-label="" name="type_id">
+            <option selected>--Chọn loại cho thuê--</option>
+            @foreach (var item in listType)
+            {
+                <option value="@item.type_real_estate_id">@item.name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="">Tiêu đề</label>
+        <input type="text" class="form-control" placeholder="Nhập tiêu đề" name="title">
+    </div>
+    <div class="form-group">
+        <label for="">Tiêu đề phụ</label>
+        <input type="text" class="form-control" placeholder="Nhập tiêu đề phụ" name="sub_title">
+    </div>
+    <div class="form-group">
+        <label for="">Mô tả</label>
+        <textarea placeholder="Nhập mô tả" class="form-control" id="description" rows="10" name="description"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="">Thông tin liên hệ</label>
+        <input type="text" class="form-control" value="@user.phone" disabled placeholder="Nhập tiêu đề phụ">
+    </div>
+    <div class="form-group">
+        <label for="">Giá</label>
+        <input type="text" class="form-control" value="" name="price" placeholder="đồng">
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="">Lầu</label>
+                <input type="number" class="form-control" value="" placeholder="Nhập" name="floor">
+            </div>
+            <div class="col-md-3">
+                <label for="">Phòng ngủ</label>
+                <input type="number" class="form-control" value="" placeholder="Nhập" name="bedroom">
+            </div>
+            <div class="col-md-3">
+                <label for="">Nhà tắm</label>
+                <input type="number" class="form-control" value="" placeholder="Nhập" name="bathroom">
+            </div>
+            <div class="col-md-3">
+                <label for="">Diện tích</label>
+                <input type="number" class="form-control" value="" placeholder="Nhập" name="acreage">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="uploadImage">Tải ảnh đại diện</label>
+        <span id="stop-upload" style="color: red"></span>
+        <div class="dropzone">
+            <img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" id="pictureUpload" width="98" height="87" />
+            <input type="file" class="upload-input" id="fileUpload" name="ImageUpload" accept="image/*" onchange="ShowImagePreview(this, document.getElementById('pictureUpload'))" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="">Tải ảnh chi tiết</label>
+        <p class="dropzone" id="EPdropzone">
+            <label for="attachment">
+                <a class="" role="button" aria-disabled="false"><img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" id="pictureUploadDetail" width="98" height="87" /></a>
+            </label>
+            <input type="file" name="files" accept="image/*" id="attachment" style="visibility: hidden; position: absolute;" multiple />
+
+        </p>
+        <p id="files-area">
+            <span id="filesList">
+                <span id="files-names"></span>
+            </span>
+        </p>
+    </div>
+    <button type="submit" class="btn btn-primary">Tạo bài đăng</button>
+}
+<script src="~/Public/js/ckeditor/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#description'))
+        .catch(error => {
+            console.error(error);
+        });
+    const dt = new DataTransfer();
+
+    var btnIframe = $('#btn-iframe')
+    btnIframe.click(function (e) {
+        e.preventDefault()
+        $('#image-tutorial').removeClass('hide-iframe')
+        $('#image-tutorial').addClass('show-iframe')
+        $('#btn-close-tutorial').removeClass('hide-iframe')
+        $('#btn-close-tutorial').addClass('show-iframe')
+    })
+    $('#btn-close-tutorial').click(function () {
+        $('#image-tutorial').removeClass('show-iframe')
+        $('#image-tutorial').addClass('hide-iframe')
+        $('#btn-close-tutorial').removeClass('show-iframe')
+        $('#btn-close-tutorial').addClass('hide-iframe')
+    })
+    $("#attachment").on('change', function (e) {
+        $('#pictureUploadDetail').remove()
+        $('#EPdropzone').removeClass('dropzone')
+        for (var i = 0; i < this.files.length; i++) {
+            let fileBloc = $('<span/>', { class: 'file-block' }),
+                fileName = $('<span/>', { class: 'name', text: this.files.item(i).name });
+            fileBloc.append('<span class="file-delete"><span>x</span></span>')
+                .append(fileName);
+            $("#filesList > #files-names").append(fileBloc);
+        };
+        for (let file of this.files) {
+            dt.items.add(file);
+        }
+        this.files = dt.files;
+
+        $('span.file-delete').click(function () {
+            let name = $(this).next('span.name').text();
+            $(this).parent().remove();
+            for (let i = 0; i < dt.items.length; i++) {
+                if (name === dt.items[i].getAsFile().name) {
+                    dt.items.remove(i);
+                    continue;
+                }
+            }
+            document.getElementById('attachment').files = dt.files;
+        });
+    });
+    var citySearch = $('#city-search')
+    /*citySearch.find(":selected").val()*/
+    var btnSearch = $('#btn-search')
+    var districtSearch = $('#district-search');
+    var subDSearch = $('#sub-district-search')
+
+
+    citySearch.change(function () {
+        var city_id = citySearch.find(":selected").val()
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetDistrictByIdCity",
+            data: { city_id: city_id },
+            dataType: "json",
+            success: function (res) {
+                if (res.length == 0) {
+                    districtSearch.html('<option value="" data-tokens="">Không tìm thấy dữ liệu</option>')
+                    $('.selectpicker').selectpicker('refresh');
+                }
+                else {
+                    districtSearch.html('<option value="" data-tokens="" selected>--Chọn quận--</option>')
+                    $('.selectpicker').selectpicker('refresh');
+                    $.each(res, function (index, value) {
+                        districtSearch.append('<option value="' + value.district_id + '" data-tokens="' + value.name + '">' + value.name + '</option>')
+                        $('.selectpicker').selectpicker('refresh');
+                    })
+                }
+            }
+        })
+    })
+
+    districtSearch.change(function () {
+        var district_id = districtSearch.find(":selected").val()
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetSubDistrictByIdD",
+            data: { district_id: district_id },
+            dataType: "json",
+            success: function (res) {
+                if (res.length == 0) {
+                    subDSearch.html('<option value="" data-tokens="">Không tìm thấy dữ liệu</option>')
+                    $('.selectpicker').selectpicker('refresh');
+                }
+                else {
+                    subDSearch.html('<option value="" data-tokens="" selected>--Chọn phường--</option>')
+                    $('.selectpicker').selectpicker('refresh');
+                    $.each(res, function (index, value) {
+                        subDSearch.append('<option value="' + value.sub_district_id + '" data-tokens="' + value.name + '">' + value.name + '</option>')
+                        $('.selectpicker').selectpicker('refresh');
+                    })
+                }
+            }
+        })
+    })
+
+</script>
+<script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("dot");
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+    }
+</script>

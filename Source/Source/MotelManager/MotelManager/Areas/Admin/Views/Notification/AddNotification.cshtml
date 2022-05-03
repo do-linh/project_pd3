@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "AddNotification";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    List<MotelManager.Models.EF.Account> users = ViewBag.listUser;
+}
+<style>
+    .ck-editor__editable {
+        min-height: 250px;
+    }
+</style>
+<script src="~/Public/js/ckeditor/ckeditor.js"></script>
+<script src="~/Public/js/jquery-3.5.1.js"></script>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Create Notification</h1>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Tạo thông báo</h6>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm("AddNotification", "Notification", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="form-group">
+                <label for="">Tiêu đề</label>
+                <input type="text" class="form-control" name="notification_title" placeholder="Nhập tiêu đề">
+            </div>
+            <div class="form-group">
+                <label for="">Nội dung</label>
+                <textarea type="text" class="form-control" id="notification" name="notification_content" placeholder="Nhập nội dung"></textarea>
+            </div>
+            <label for="">Tên người nhận</label>
+            <select class="selectpicker" data-width="100%" data-live-search="true" name="account_id">
+                <option value="0" data-tokens="" selected>--Chọn người nhận--</option>
+                <option value="0" data-tokens="">Thông báo chung</option>
+                @foreach (var item in users)
+                {
+                    <option value="@item.account_id">@item.username</option>
+                }
+            </select>
+            <div class="form-group" style="margin-top: 30px">
+                <button type="submit" class="btn btn-primary btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Tạo thông báo</span>
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#notification'))
+        .catch(error => {
+            console.error(error);
+        });
+    const dt = new DataTransfer();
+</script>
+

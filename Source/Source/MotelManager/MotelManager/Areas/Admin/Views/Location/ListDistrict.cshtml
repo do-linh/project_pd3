@@ -1,0 +1,215 @@
+﻿@model MotelManager.Models.EF.District
+@{
+    ViewBag.Title = "ListDistrict";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    List<MotelManager.Models.EF.District> districts = ViewBag.district;
+    List<MotelManager.Models.EF.City> cities = ViewBag.city;
+}
+
+
+<style>
+    .btn-add {
+        margin-bottom: 20px
+    }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">List District</h1>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables District</h6>
+    </div>
+    <div class="card-body">
+        <div class="btn-add">
+            <button type="button" class="btn btn-primary btn-icon-split" data-toggle="modal" data-target="#Addmodal">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Thêm</span>
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="Addmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Thêm quận mới</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="">
+                                    <div class="form-group">
+                                        <label for="">Tên quận</label>
+                                        <input type="text" name="name" id="district-name" class="form-control" placeholder="Nhập tên quận">
+                                    </div>
+                                    <label for="">Tên thành phố</label>
+                                    <select class="selectpicker" id="city-search" data-width="100%" data-live-search="true" name="city_id">
+                                        <option value="" data-tokens="" selected>--Chọn thành phố--</option>
+                                        @foreach (var item in cities)
+                                        {
+                                            <option value="@item.city_id">@item.name</option>
+                                        }
+                                    </select>
+                                    <div class="form-group">
+                                        <label for="">Slug</label>
+                                        <input type="text" disabled id="slug-name-district" name="slug" class="form-control" placeholder="Nhập tên quận">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                <button type="submit" id="btn-add-city" class="btn btn-primary">Thêm</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Mã quận</th>
+                        <th>Tên quận</th>
+                        <th>Slug</th>
+                        <th>Thành phố thuộc</th>
+                        <th>
+                            Thao tác
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in districts)
+                    {
+                        <tr>
+                            <td>@item.district_id</td>
+                            <td>@item.name</td>
+                            <td>@item.slug</td>
+                            <td>@item.Cities.name</td>
+                            <th>
+                                <button  class="btn btn-info btn-icon-split" onclick="EditDistrict(@item.district_id)">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                    <span class="text">Edit</span>
+                                </button>
+                                <a href="#" onclick="DelDistrict(@item.district_id)" class="btn btn-danger btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                    <span class="text">Del</span>
+                                </a>
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Chỉnh sửa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="body-modal-edit">
+
+                </div>
+                
+        </div>
+    </div>
+</div>
+<script src="~/Public/js/jquery-3.5.1.js"></script>
+<script>
+    var EditDistrict = function (district_id) {
+        $.ajax({
+            type: 'get',
+            url: '@Url.Action("EditDistrict", "Location")',
+            data: { district_id: district_id },
+            success: function (data) {
+                $('#body-modal-edit').html(data);
+                $('#exampleModalCenter').modal('show')
+                $('.selectpicker').selectpicker('refresh');
+            }
+        })
+    }
+    var inputName = $('#district-name');
+    inputName.change(function () {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("CheckSlugDistrict", "Location")',
+            data: { name: inputName.val() },
+            dataType: 'json',
+            success: function (data) {
+                $('#slug-name-district').val(data.result)
+            }
+        })
+    })
+
+    var btnSubmit = $('#btn-add-city')
+    btnSubmit.click(function () {
+        var inputName = $('#district-name')
+        var selectCity = $('#city-search')
+        var slugName = $('#slug-name-district')
+        /*console.log(inputName.val(), selectCity.find(":selected").val(), slugName.val())*/
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("AddDistrict", "Location")',
+            data: { city_id: selectCity.find(":selected").val(), name: inputName.val(), slug: slugName.val() },
+            success: function (data) {
+                if (data.result == 'success') {
+                    swal("Thêm thành công", "", "success")
+                        .then(() => {
+                            location.reload();
+                        })
+                }
+            },
+            error: function () {
+                swal("Lỗi hệ thống", "", "error")
+            }
+        })
+    })
+    var DelDistrict = function (district_id) {
+    /*console.log(district_id)*/
+        swal({
+            title: "Bạn có chắc muốn xóa?",
+            text: "Xóa quận với id là: " + district_id,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Đã xóa", {
+                        icon: "success",
+                    }).then(() => {
+                        $.ajax({
+                            type: 'post',
+                            url: '@Url.Action("DeleteDistrict", "Location")',
+                            data: { district_id: district_id },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.result == 'success') {
+                                    location.reload();
+                                }
+                            },
+                            error: function () {
+                                swal("Lỗi hệ thống", "", "error");
+                            }
+                        })
+                    })
+                } else {
+                    swal("Đã hủy");
+                }
+            });
+    }
+</script>
+
+
+
+

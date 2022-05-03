@@ -1,0 +1,132 @@
+﻿@model MotelManager.Models.EF.Account
+@{
+    ViewBag.Title = "EditProfile";
+    Layout = "~/Views/Shared/_LayoutFUser.cshtml";
+}
+<script src="~/Public/bootstrapv5/js/script.js"></script>
+<style>
+    .info-user {
+        font-weight: bold;
+    }
+
+    form {
+        margin-bottom: 30%
+    }
+
+    div > label {
+        margin-top: 4px
+    }
+
+    .line-h2 {
+        margin-top: 8px
+    }
+
+    .image-cropper {
+        margin: 0
+    }
+
+    .btn-upload {
+        margin-top: 4px;
+        margin-left: 30px
+    }
+
+    #upload-image {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+    }
+</style>
+<h2>Cập nhật thông tin cá nhân</h2>
+<hr class="line-h2" />
+@using (Html.BeginForm("EditProfileAfter", "UserManager", FormMethod.Post, new { enctype = "multipart/form-data", @id = "form-edit-profile" }))
+{
+    <div class="form-group row">
+        <label for="username" class="col-sm-2 col-form-label">Username: </label>
+        <div class="col-sm-10">
+            <input type="text" name="username" value="@Model.username" hidden />
+            <input type="text" name="" class="form-control" placeholder="@Model.username" value="@Model.username" disabled>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="phone" class="col-sm-2 col-form-label">Số điện thoại: </label>
+        <div class="col-sm-10">
+            @if (Model.phone == null)
+            {
+                <input type="text" id="input-email" class="form-control" name="phone" placeholder="Nhập số điện thoại của bạn" value="@Model.phone">
+            }
+            else
+            {
+                <input type="text" id="input-email" class="form-control" name="phone" placeholder="@Model.phone" value="@Model.phone" disabled>
+                if (Model.authority == 3 || Model.authority == null)
+                {
+                    <span class="" ><a href="@Url.Action("CreatePost","Post")" class="text-danger"><i class="fa fa-exclamation-triangle"style="color: #f1c40f"></i> Xác thực số điện thoại</a></span>  
+                }
+                else
+                {
+                    <a href="@Url.Action("Index","Sms", new { isChangePhone = 1})">Đổi số diện thoại</a>   
+                }
+            }
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="fullname" class="col-sm-2 col-form-label">Tên hiển thị: </label>    
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="fullname" placeholder="Nhập họ tên" value="@Model.fullname">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="email" class="col-sm-2 col-form-label">Email: </label>
+        <div class="col-sm-10">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email" value="@Model.email" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="sex" class="col-sm-2 col-form-label">Giới tính: </label>
+        <div class="col-sm-10">
+            <select class="form-control" id="select-sex" name="sex" aria-label="Default select example">
+                <option value="">--Chọn giới tính--</option>
+                <option value="nam">Nam</option>
+                <option value="nu">Nữ</option>
+                <option value="khac">Khác</option>
+            </select>
+            <span id="span-sex-value" hidden>@Model.sex</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="email" class="col-sm-2 col-form-label">Đổi mật khẩu: </label>
+        <div class="col-sm-10">
+            <a href="/user/changepassword">Đổi mật khẩu</a>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="email" class="col-sm-2 col-form-label">Ảnh đại diện: </label>
+        <div class="col-sm-10">
+            <div class="flex-column image-cropper">
+                <div class="avatar-detail"><img id="avatar" src="@Model.avatar" width="200" height="200" /></div>
+            </div>
+            <label for="upload-image" class="btn btn-info btn-upload" style="cursor: pointer;">Chọn ảnh</label>
+            <input type="file" name="ImageUpload" class="btn btn-info " id="upload-image" onchange="ShowImagePreview(this, document.getElementById('avatar'))" />
+        </div>
+    </div>
+    <input type="button" class="btn btn-primary" id="btn-submit-edit" value="Lưu & Cập nhật" />
+}
+
+<script>
+    var sex = $('#span-sex-value').text();
+    var select = $('#select-sex')
+    var option = select.children();
+    var submit = $('#btn-submit-edit');
+    var form = $('#form-edit-profile')
+    submit.click(function () {
+        swal("Đã lưu!", "", "success")
+            .then(res => {
+                form.submit()
+            })
+  /*      console.log('hi')*/
+    })
+
+    for (var i = 0; i < option.length; i++) {
+        if (option[i].value == sex)
+            option[i].setAttribute('selected', 'selected');
+    }
+</script>

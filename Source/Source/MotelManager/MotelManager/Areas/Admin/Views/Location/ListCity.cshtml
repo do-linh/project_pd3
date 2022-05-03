@@ -1,0 +1,246 @@
+﻿@model MotelManager.Models.EF.City
+@{
+    ViewBag.Title = "ListCity";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    List<MotelManager.Models.EF.City> cities = ViewBag.cites;
+}
+
+<style>
+    .btn-add {
+        margin-bottom: 20px
+    }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">List City</h1>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables City</h6>
+    </div>
+    <div class="card-body">
+        <div class="btn-add">
+            <button type="button" class="btn btn-primary btn-icon-split" data-toggle="modal" data-target="#Addmodal">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Thêm</span>
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="Addmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <form action="@Url.Action("AddCity","Dashboard")" method="post">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Thêm thành phố</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="">
+                                    <div class="form-group">
+                                        <label for="">Tên thành phố</label>
+                                        <input type="text" name="name" id="city-name" class="form-control" placeholder="Nhập tên thành phố">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Slug</label>
+                                        <input type="text" disabled id="slug-name" class="form-control" placeholder="Nhập tên thành phố">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                <button type="submit" id="btn-add-city" class="btn btn-primary">Thêm</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Mã thành phố</th>
+                        <th>Tên thành phố</th>
+                        <th>Slug</th>
+                        <th>
+                            Thao tác
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in cities)
+                    {
+                        <tr>
+                            <td>@item.city_id</td>
+                            <td>@item.name</td>
+                            <td>@item.slug</td>
+                            <th>
+                                <button onclick="EditCity(@item.city_id, document.getElementById('@item.slug'))" id="@item.slug" data-name="@item.name" class="btn btn-info btn-icon-split" data-toggle="modal" data-target="#exampleModalCenter">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                    <span class="text">Edit</span>
+                                </button>
+                                <a href="#" onclick="DelCity(@item.city_id)" class="btn btn-danger btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                    <span class="text">Del</span>
+                                </a>
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Chỉnh sửa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="form-group">
+                        <label for="">Tên thành phố</label>
+                        <input type="text" name="name" id="city-name-edit" class="form-control" placeholder="Nhập tên thành phố">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Slug</label>
+                        <input type="text" disabled id="slug-name-edit" class="form-control" placeholder="Nhập tên thành phố">
+                    </div>
+                    <input value="" id="edit-id" hidden/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="btn-update-city" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Public/js/jquery-3.5.1.js"></script>
+<script>
+    var EditCity = function (city_id, ebtn) {
+        console.log(city_id, ebtn, ebtn.getAttribute('data-name'))
+        $('#city-name-edit').val(ebtn.getAttribute('data-name'))
+        $('#slug-name-edit').val(ebtn.getAttribute('id'))
+        $('#edit-id').val(city_id)
+    }
+    var nameEdit = $('#city-name-edit')
+    var slug = $('#slug-name-edit')
+    nameEdit.change(function () {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("CheckSlugCity", "Location")',
+            data: { name: nameEdit.val() },
+            dataType: 'json',
+            success: function (data) {
+                slug.val(data.result)
+            }
+        })
+    })
+    $('#btn-update-city').click(function () {
+        var name = $('#city-name-edit')
+        var slug = $('#slug-name-edit')
+        var cityId = $('#edit-id')
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("EditCity", "Location")',
+            data: { city_id: cityId.val(), name: name.val(), slug: slug.val() },
+            dataType: 'json',
+            success: function (data) {
+                swal("Cập nhật thành công", "", "success").then(() => {
+                    location.reload();
+                })
+            },
+            error: function () {
+                swal("Lỗi hệ thống", "", "error");
+            }
+        })
+    })
+    var DelCity = function (city_id) {
+        console.log(city_id)
+        swal({
+            title: "Bạn có chắc muốn xóa?",
+            text: "Xóa thành phố với id là: " + city_id,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Đã xóa", {
+                        icon: "success",
+                    }).then(() => {
+                        $.ajax({
+                            type: 'post',
+                            url: '@Url.Action("DelCity", "Location")',
+                            data: { city_id: city_id },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.result == 'success') {
+                                    location.reload();
+                                }
+                            },
+                            error: function () {
+                                swal("Lỗi hệ thống", "", "error");
+                            }
+                        })
+                    })
+                } else {
+                    swal("Đã hủy");
+                }
+            });
+    }
+    var inputName = $('#city-name');
+    inputName.change(function () {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("CheckSlugCity", "Location")',
+            data: { name: inputName.val() },
+            dataType: 'json',
+            success: function (data) {
+                $('#slug-name').val(data.result)
+            }
+        })
+    })
+    $('#btn-add-city').click(function () {
+        var inputSlug = $('#slug-name')
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("AddCity", "Location")',
+            data: { name: inputName.val(), slug: inputSlug.val() },
+            dataType: 'json',
+            success: function (data) {
+                if (data.result == 'success') {
+                    location.reload();
+                }
+            },
+            error: function () {
+                swal("Lỗi hệ thống", "", "error");
+            }
+        })
+    })
+    @*$('#city-name').change(function () {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("CheckSlugCity", "Location")',
+            data: { name: $('#city-name').val() },
+            dataType: 'json',
+            success: function (data) {
+                $('#slug-name').val(data.result)
+            }
+        })
+    })*@
+</script>
+
+

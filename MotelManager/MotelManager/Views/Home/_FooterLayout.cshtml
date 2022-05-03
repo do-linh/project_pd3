@@ -1,0 +1,50 @@
+﻿@model MotelManager.Models.EF.About
+@{
+    ViewBag.Title = "_FooterLayout";
+}
+
+<div class="footer-section">
+    <div class="container">
+        <div class="footer-grids">
+            <div class="col-md-3 footer-grid">
+                <h4>About </h4>
+                <p>
+                    @Html.Raw(Model.about)
+                </p>
+            </div>
+            <div class="col-md-3 footer-grid">
+                <h4>Property Types</h4>
+                <ul>
+                    <li>Tìm kiếm nhanh chóng, hiệu quả</li>
+                    <li>Hợp tác với nhiều trang web</li>
+                    <li>Có mặt trên khắp cả nước</li>
+                    <li>Cam kết uy tín chất lượng</li>
+                    <li>Làm việc chuyên nghiệp tận tâm</li>
+                    <li>Giá cả chính xác</li>
+                </ul>
+            </div>
+            
+            <div class="col-md-3 footer-grid">
+                <h4>Contacts</h4>
+                <ul>
+                    <li><i class="fas fa-phone"></i>@Model.phone</li>
+                    <li>
+                        <i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="mailto:@Model.email">@Model.email</a>
+                    </li>
+                    <li><i class="fa fa-map-marker" aria-hidden="true"></i>@Model.address</li>
+                    <li><i class="far fa-clock"></i>Mon-Sat @Model.start_time am to @Model.finish_time pm</li>
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+
+    </div>
+</div>
+<!--footer-->
+<!--copy-->
+<div class="copy-section">
+    <div class="container">
+        <p>&copy; 2016 Home Plat. All rights reserved</p>
+    </div>
+</div>
+

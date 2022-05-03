@@ -1,0 +1,200 @@
+﻿
+@{
+    ViewBag.Title = "ListPost";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    List<MotelManager.Models.EF.Post> listposts = ViewBag.list;
+}
+
+<style>
+    .btn-add {
+        margin-bottom: 20px
+    }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">List Post</h1>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Post</h6>
+    </div>
+    <div class="card-body">
+        <div class="btn-add">
+            <a href="@Url.Action("CreatePost","PostManager")" class="btn btn-primary btn-icon-split" >
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Thêm</span>
+            </a>
+
+            <!-- Modal -->
+            
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Mã tin</th>
+                        <th>Tiêu đề</th>
+                        <th>Ảnh đại diện</th>
+                        <th>Giá</th>
+                        <th>Ngày đăng</th>
+                        <th>Trạng thái</th>
+                        <th>
+                            Thao tác
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in listposts)
+                    {
+                        <tr>
+                            <td>@item.post_id</td>
+                            <td>@item.title</td>
+                            <td><img src="@item.image_post" alt="Ảnh đại diện" width="200" height="200" /></td>
+                            <td>@(string.Format("{0:#,##0}", item.Motel.price).Replace(",","."))</td>
+                            <td>@item.created_date.ToString().Substring(0, 10)</td>
+                            <td>
+                                @if (item.status == 1)
+                                {
+                                    <span class="badge badge-primary">Active</span>
+                                }
+                                else if (item.status == 2)
+                                {
+                                    <span class="badge badge-warning">UnActive</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary">Closed</span>
+                                }
+                            </td>
+                            <td>
+                                <button class="btn btn-success btn-icon-split" onclick="ViewPost(@item.post_id)">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                    <span class="text">View</span>
+                                </button>
+                                <a href="@Url.Action("EditPost","PostManager", new { post_id = item.post_id})" class="btn btn-info btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                    <span class="text">Edit</span>
+                                </a>
+                                <a href="#" onclick="DelPost(@item.post_id)" class="btn btn-danger btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                    <span class="text">Del</span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="modal-post-detail" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detail post</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-post">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="notification-modal" tabindex="-2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Gửi thông báo cho người đăng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-post">
+                <form action="@Url.Action("CreateNofiction","PostManager")" method="post">
+                    <div class="form-group">
+                        <label for="">Tiêu đề</label>
+                        <input type="text" class="form-control" name="notification_title" placeholder="Nhập tiêu đề">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Nội dung</label>
+                        <input type="text" class="form-control" name="notification_content" placeholder="Nhập nội dung">
+                        <input name="post_id" id="post-id-notification" hidden/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gửi</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Public/js/jquery-3.5.1.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#dataTable').DataTable({
+            "order": [[0, "desc"]]
+        });
+    });
+    var ViewPost = function (post_id) {
+        $.ajax({
+            type: 'get',
+            url: '@Url.Action("ViewPost", "PostManager")',
+            data: { post_id: post_id },
+            success: function (data) {
+                $('#modal-post').html(data)
+                $('#modal-post-detail').modal('show');
+            }
+        })
+    }
+    var DelPost = function (post_id) {
+        swal({
+            title: "Bạn có chắc muốn xóa?",
+            text: "Xóa bài đăng với id là: " + post_id,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Đã xóa", {
+                        icon: "success",
+                    }).then(() => {
+                        console.log($('notification-modal'))
+                        $('notification-modal').modal('show')
+                        $.ajax({
+                            type: 'post',
+                            url: '@Url.Action("DeletePost", "PostManager")',
+                            data: { post_id: post_id },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.result == 'success') {
+                                    $('#post-id-notification').val(post_id)
+                                    $('#notification-modal').modal('show')
+                                    /*location.reload();*/
+                                }
+                            },
+                            error: function () {
+                                swal("Lỗi hệ thống", "", "error");
+                            }
+                        })
+                    })
+                } else {
+                    swal("Đã hủy");
+                }
+            });
+    }
+</script>
