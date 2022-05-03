@@ -5,7 +5,6 @@ namespace MotelManager.Models.EF
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using System.Web;
 
     [Table("Image")]
     public partial class Image
@@ -16,6 +15,5 @@ namespace MotelManager.Models.EF
         public string url { get; set; }
 
         public int? motel_id { get; set; }
-        
     }
 }

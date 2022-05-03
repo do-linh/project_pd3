@@ -17,6 +17,7 @@ namespace MotelManager.Models.EF
 
         [StringLength(50)]
         public string slug { get; set; }
+
         public bool? status { get; set; }
     }
 }

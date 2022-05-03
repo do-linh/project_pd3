@@ -9,6 +9,11 @@ namespace MotelManager.Models.EF
     [Table("Motel")]
     public partial class Motel
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public Motel()
+        {
+            OrderDetails = new HashSet<OrderDetails>();
+        }
         [Key]
         public int motel_id { get; set; }
 
@@ -24,6 +29,7 @@ namespace MotelManager.Models.EF
 
         [StringLength(255)]
         public string address { get; set; }
+
         public string iframe { get; set; }
 
         public int? district_id { get; set; }
@@ -36,5 +42,7 @@ namespace MotelManager.Models.EF
 
         [StringLength(200)]
         public string code_motel { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
     }
 }

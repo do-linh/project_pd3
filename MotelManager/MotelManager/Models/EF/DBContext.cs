@@ -21,12 +21,15 @@ namespace MotelManager.Models.EF
         public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<Motel> Motels { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetails> OrderDetailss { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<SubDistrict> SubDistricts { get; set; }
         public virtual DbSet<TypeRE> TypeREs { get; set; }
         public virtual DbSet<Code> Codes { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -82,6 +85,10 @@ namespace MotelManager.Models.EF
                 .Property(e => e.slug)
                 .IsUnicode(false);
 
+            modelBuilder.Entity<Code>()
+                .Property(e => e.code)
+                .IsUnicode(false);
+
             modelBuilder.Entity<District>()
                 .Property(e => e.slug)
                 .IsUnicode(false);
@@ -91,20 +98,24 @@ namespace MotelManager.Models.EF
                 .IsUnicode(false);
 
             modelBuilder.Entity<Motel>()
-                .Property(e => e.code_motel)
+                .Property(e => e.iframe)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Motel>()
-               .Property(e => e.iframe)
-               .IsUnicode(false);
+                .Property(e => e.code_motel)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<OrderDetails>()
+                .Property(e => e.price)
+                .HasPrecision(18, 0);
 
             modelBuilder.Entity<Post>()
                 .Property(e => e.image_post)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Post>()
-               .Property(e => e.code_post)
-               .IsUnicode(false);
+                .Property(e => e.code_post)
+                .IsUnicode(false);
 
             modelBuilder.Entity<SubDistrict>()
                 .Property(e => e.slug)
@@ -112,10 +123,6 @@ namespace MotelManager.Models.EF
 
             modelBuilder.Entity<TypeRE>()
                 .Property(e => e.slug)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Code>()
-                .Property(e => e.code)
                 .IsUnicode(false);
         }
     }

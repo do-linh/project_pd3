@@ -165,7 +165,9 @@
     <Compile Include="Common\Encryptor.cs" />
     <Compile Include="Common\UserLogin.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\SmsController.cs" />
     <Compile Include="Controllers\UserManagerController.cs" />
@@ -178,6 +180,7 @@
     <Compile Include="Models\DAO\UserDAO.cs" />
     <Compile Include="Models\EF\About.cs" />
     <Compile Include="Models\EF\Account.cs" />
+    <Compile Include="Models\EF\Cart.cs" />
     <Compile Include="Models\EF\City.cs" />
     <Compile Include="Models\EF\Code.cs" />
     <Compile Include="Models\EF\Comment.cs" />
@@ -187,6 +190,8 @@
     <Compile Include="Models\EF\Image.cs" />
     <Compile Include="Models\EF\Motel.cs" />
     <Compile Include="Models\EF\Notification.cs" />
+    <Compile Include="Models\EF\Order.cs" />
+    <Compile Include="Models\EF\OrderDetails.cs" />
     <Compile Include="Models\EF\Post.cs" />
     <Compile Include="Models\EF\Report.cs" />
     <Compile Include="Models\EF\Setting.cs" />
@@ -2195,12 +2200,16 @@
     <Content Include="Views\UserManager\ListPostUser.cshtml" />
     <Content Include="Views\UserManager\EditPost.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Shared\_LayoutOrder.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
+    <Content Include="Views\Cart\Cart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Public\sweetalert2\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

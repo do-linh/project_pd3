@@ -10,6 +10,11 @@ namespace MotelManager.Models.EF
     [Table("Account")]
     public partial class Account
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public Account()
+        {
+            Orders = new HashSet<Order>();
+        }
         [Key]
         public int account_id { get; set; }
 
@@ -45,5 +50,8 @@ namespace MotelManager.Models.EF
         [NotMapped]
         public HttpPostedFileBase ImageUpload { get; set; }
         public byte[] avatarImage { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order> Orders { get; set; }
+
     }
 }

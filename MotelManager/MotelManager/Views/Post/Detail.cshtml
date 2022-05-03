@@ -29,24 +29,30 @@
         font-size: 1.5em;
         font-weight: bold
     }
+
     #user-id {
         visibility: hidden;
     }
+
     #btn-favorite {
         margin-bottom: 10px
     }
+
     a.dropdown-item {
         margin-left: 10%;
-        margin-bottom: 0; 
+        margin-bottom: 0;
         color: darkblue;
     }
+
     #dropdown-item {
         visibility: hidden;
         font-size: 1em
     }
-    hr{
+
+    hr {
         margin: 3% auto
     }
+
     .deatils ul li a {
         font-size: 1.1em;
         color: #C6C7C7;
@@ -56,20 +62,25 @@
         font-size: 15px;
         margin-left: 0;
     }
+
     #dropdown-box {
         margin-left: -12%;
         min-width: 200px;
         padding-top: 0
     }
-    .map-google{
+
+    .map-google {
         width: 100%
     }
-    iframe{
+
+    iframe {
         width: 100%
     }
-    .gg-map{
+
+    .gg-map {
         font-weight: bold
     }
+
     .MultiCarousel {
         float: left;
         overflow: hidden;
@@ -78,39 +89,43 @@
         position: relative;
         padding-top: 0
     }
-    .icon-arrow-left{
+
+    .icon-arrow-left {
         margin-left: -3px;
         margin-top: -4px
     }
+
     .MultiCarousel .MultiCarousel-inner {
         transition: 1s ease all;
         float: left;
     }
 
-    .MultiCarousel .MultiCarousel-inner .item {
-        float: left;
-    }
+        .MultiCarousel .MultiCarousel-inner .item {
+            float: left;
+        }
 
-    .MultiCarousel .MultiCarousel-inner .item > div {
-        /*text-align: center;*/
-        padding: 10px;
-        margin: 10px;
-        color: #666;
-    }
+            .MultiCarousel .MultiCarousel-inner .item > div {
+                /*text-align: center;*/
+                padding: 10px;
+                margin: 10px;
+                color: #666;
+            }
+
     .leftLst {
         margin-left: 10px;
         height: 35px;
         width: 35px;
         background-color: #02B875
     }
+
     .rightLst {
         margin-right: 10px;
         height: 35px;
         width: 35px;
         background-color: #02B875;
-        border: 0 
-        
+        border: 0
     }
+
     .MultiCarousel .leftLst,
     .MultiCarousel .rightLst {
         position: absolute;
@@ -126,37 +141,45 @@
         right: 0;
     }
 
-    .MultiCarousel .leftLst.over,
-    .MultiCarousel .rightLst.over {
-        pointer-events: none;
-        background: #ccc;
-        border: 0
-    }
-    .item-slider{
+        .MultiCarousel .leftLst.over,
+        .MultiCarousel .rightLst.over {
+            pointer-events: none;
+            background: #ccc;
+            border: 0
+        }
+
+    .item-slider {
         padding: 10px
     }
-    .content-item{
+
+    .content-item {
         text-align: left;
     }
+
     .title-item {
         color: #02B875;
         font-weight: bold;
     }
-    .sub-title-item{
+
+    .sub-title-item {
         font-size: 1em;
     }
-    .price-item{
+
+    .price-item {
         font-size: 1em
     }
-    .title-related{
+
+    .title-related {
         margin-left: 30px;
         font-weight: bold;
         font-size: 1.5em;
     }
+
     .pad15 > img {
         border-radius: 5%;
     }
-    .modal-body{
+
+    .modal-body {
         padding: 0 30px 0 30px;
     }
 </style>
@@ -196,7 +219,7 @@
                 </div>
                 <div class="info-detail">
                     <label class="title">@Model.title <p style="color: red;"> @(Model.status == 3 ? "(Bài viết đã đóng)" : "")</p> </label>
-                    
+
                     <label class="address">Địa chỉ: @Model.Motel.address</label><br />
                     <label class="price">Giá: @(string.Format("{0:#,##0}", Model.Motel.price).Replace(",",".")) đ</label><br />
                     <p class="description">Thông tin mô tả <label>@Html.Raw(Model.description)</label></p>
@@ -269,54 +292,63 @@
                         </div>
                     </div>
                     @if (Model.Motel.iframe != null)
-                     {
+                    {
                         <p class="gg-map">
                             Xem trên bản đồ
                         </p>
                         <div class="map-google">
                             @Html.Raw(Model.Motel.iframe)
                         </div>
-                     }
+                    }
                 </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    @using (Html.BeginForm("ThemGioHang", "Cart", new { @imotel = Model.motel_id, @strURL = Request.Url.ToString() }))
+                    {
+                        <input style="padding: 10px 20px; font-weight:600; border-radius:5px;" type="submit" value="Đặt Phòng" id="bgnGioHang" />
+                    }
+                </div>
+
+                
             </div>
             @*<div class="col-md-3 p-lg-3" style="padding: 0">
-                <div class="right-side-content" style="margin-top: -1em">
-                    <div class="flex-column image-cropper">
-                        <div class="avatar-detail"><img id="avatar" src="@User.avatar" width="200" height="200" /></div>
-                    </div>
-                    <label class="fullname">@User.fullname</label><br />
-                    <label class="phone"><a href="tel:@User.phone">@User.phone</a></label><br />
-                    <label class="email"><a href="mailto:@User.email">@User.email</a></label><br />
-                    <div id="warp-btn">
-                        @if (session == null)
-                        {
-                            <button type="button" class="btn btn-outline-success" id="btn-favorite"><i class="icon far fa-heart"></i> Lưu tin</button>
-                        }
-                        else
-                        {
-                            <span id="user-id">@session.userID</span>
-                            if (favorite != null)
-                            {
-                                <button type="button" class="btn btn-success" id="btn-favorite"><i class="icon fas fa-heart"></i> Đã lưu</button>
-                            }
-                            else
+                    <div class="right-side-content" style="margin-top: -1em">
+                        <div class="flex-column image-cropper">
+                            <div class="avatar-detail"><img id="avatar" src="@User.avatar" width="200" height="200" /></div>
+                        </div>
+                        <label class="fullname">@User.fullname</label><br />
+                        <label class="phone"><a href="tel:@User.phone">@User.phone</a></label><br />
+                        <label class="email"><a href="mailto:@User.email">@User.email</a></label><br />
+                        <div id="warp-btn">
+                            @if (session == null)
                             {
                                 <button type="button" class="btn btn-outline-success" id="btn-favorite"><i class="icon far fa-heart"></i> Lưu tin</button>
                             }
+                            else
+                            {
+                                <span id="user-id">@session.userID</span>
+                                if (favorite != null)
+                                {
+                                    <button type="button" class="btn btn-success" id="btn-favorite"><i class="icon fas fa-heart"></i> Đã lưu</button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-outline-success" id="btn-favorite"><i class="icon far fa-heart"></i> Lưu tin</button>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="right-side-content" style="margin-top: 10px">
+                        <label style="font-weight: bold; margin: 5px">Danh sách quận cùng thành phố</label>
+                        <hr />
+                        @foreach (var item in districts)
+                        {
+                            <p><a href="@Url.Action("Search","Home", new { city_id = item.city_id})" style="color: #636e72">@item.name</a></p>
                         }
                     </div>
-                </div>
-                <div class="right-side-content" style="margin-top: 10px">
-                    <label style="font-weight: bold; margin: 5px">Danh sách quận cùng thành phố</label>
-                    <hr />
-                    @foreach (var item in districts)
-                    {
-                        <p><a href="@Url.Action("Search","Home", new { city_id = item.city_id})" style="color: #636e72">@item.name</a></p>
-                    }
-                </div>
-            </div>*@
+                </div>*@
         </div>
-        <div class="row">
+
+        <!--<div class="row">
             <div class="container col-md-9 left-side item-slider">
                 <div class="row">
                     <div class="title-related">Nhà trọ cùng khu vực</div>
@@ -333,19 +365,18 @@
                                             <p class="price-item">@(string.Format("{0:#,##0}", item.Motel.price).Replace(",",".")) đ</p>
                                         </div>
                                     </div>
-                                    
-                                </div>
-                            }
 
-                            @*<div class="item">
-                                <div class="pad15">
-                                    <p class="lead">Multi Item Carousel</p>
-                                    <p>₹ 1</p>
-                                    <p>₹ 6000</p>
-                                    <p>50% off</p>
                                 </div>
-                            </div>*@
-                        </div>
+                            }-->
+        @*<div class="item">
+                <div class="pad15">
+                    <p class="lead">Multi Item Carousel</p>
+                    <p>₹ 1</p>
+                    <p>₹ 6000</p>
+                    <p>50% off</p>
+                </div>
+            </div>*@
+        <!--</div>
                         <button class="btn btn-primary leftLst"><i class="fas fa-chevron-left icon-arrow-left"></i></button>
                         <button class="btn btn-primary rightLst"><i class="fas fa-chevron-right"></i></button>
                     </div>
@@ -355,7 +386,9 @@
             <div class="col-md-3">
 
             </div>
-        </div>
+        </div>-->
+
+
     </div>
 </div>
 <script src="~/Public/js/item.slider.js"></script>

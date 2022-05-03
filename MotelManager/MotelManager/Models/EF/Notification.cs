@@ -1,4 +1,4 @@
-﻿namespace MotelManager.Models.EF
+namespace MotelManager.Models.EF
 {
     using System;
     using System.Collections.Generic;

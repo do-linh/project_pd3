@@ -8,31 +8,38 @@
 }
 <style>
     ul {
-        
     }
+
     .inline-nav {
         float: left;
         margin-left: 20px
     }
+
     .navbar-nav {
         flex-direction: row;
     }
-    a.dropdown-item{
+
+    a.dropdown-item {
         margin-left: 10%;
         margin-bottom: 10%;
         color: darkblue
     }
-    #dropdown-box{
-       min-width: 200px
+
+    #dropdown-box {
+        min-width: 200px
     }
+
     .dropdown-menu {
     }
-    hr{
+
+    hr {
         margin: 5% auto
     }
+
     a.btn.btn-default {
         background-color: white
     }
+
     .btn-submit {
         background: #05222A;
         color: #fff;
@@ -49,9 +56,11 @@
         margin-top: .5em;
         font-family: 'Josefin Sans', sans-serif;
     }
+
     .count-notification {
         margin-left: -10px
     }
+
     .notification-list {
         width: 300px;
         background-color: white;
@@ -63,13 +72,16 @@
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         z-index: 10
     }
-    .show-notification{
+
+    .show-notification {
         display: block;
     }
+
     .hide-notification {
         display: none;
     }
-    .title-notification{
+
+    .title-notification {
         font-weight: bold;
     }
 </style>
@@ -77,11 +89,6 @@
     <div class="header-top">
         <div class="container">
             <div class="head-top">
-                <div class="indicate">
-                    <i class="fa fa-map-marker" id="local-top" aria-hidden="true"></i><a href="#">
-                        @Model.address
-                    </a>
-                </div>
                 <div class="deatils">
                     <ul>
                         @if (session == null)
@@ -184,9 +191,9 @@
                     }
                 }
             </div>
+        </div>
     </div>
-    </div>
-    
+
     <div class="container">
         <div class="header-bottom" style="width: 700px">
             <nav class="navbar navbar-default">
@@ -206,7 +213,7 @@
                         <nav class="form-inline">
                             <ul class="nav navbar-nav menu__list" style="float:left">
                                 <li class="menu__item menu__item--current">
-                                    <a href="index.html"
+                                    <a href="@Url.Action("Index","Home")"
                                        class="menu__link"><span class="menu__helper">Home</span></a>
                                 </li>
                                 <li class="menu__item inline-nav">
@@ -219,6 +226,11 @@
                                             <li><a href="">@item.name</a></li>
                                         }
                                     </ul>
+                                </li>
+                                <li class="menu__item inline-nav">
+                                    <a style="color:black"
+                                       class="nav-link"
+                                       href="@Url.Action("Index", "Orders")">Đơn Hàng</a>
                                 </li>
                             </ul>
                         </nav>
@@ -252,22 +264,22 @@
                     <div class="login">
                         <div class="login-right">
                             @*@using (Html.BeginForm("", "", FormMethod.Post, new { @id = "form-login" }))
-                            {
-                                // @Html.AntiForgeryToken() 
-                                @Html.ValidationSummary(false, "", new { @class = "text-danger"});*@
-                                <h3>Sign In</h3>
-                                <span id="span-validate-login" style="color: red; font-weight: bold"></span>
-                                <input type="text" id="username" name="username" placeholder="Enter your UserName" required="">
-                                <input type="password" id="password" name="password" placeholder="Password" required="">
-                                <h4><a href="#">Forgot password</a> / <a href="#">Create new password</a></h4>
-                                <span class="text-danger" id="login-span"></span>
+                                {
+                                    // @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(false, "", new { @class = "text-danger"});*@
+                            <h3>Sign In</h3>
+                            <span id="span-validate-login" style="color: red; font-weight: bold"></span>
+                            <input type="text" id="username" name="username" placeholder="Enter your UserName" required="">
+                            <input type="password" id="password" name="password" placeholder="Password" required="">
+                            <h4><a href="#">Forgot password</a> / <a href="#">Create new password</a></h4>
+                            <span class="text-danger" id="login-span"></span>
 
-                                <div class="single-bottom">
-                                    <input type="checkbox" id="brand" value="">
-                                    <label for="brand"><span></span>Remember Me.</label>
-                                </div>
-                                @*<input type="submit" id="btn-submit" value="Sign In">*@
-                                <button class="btn-submit" id="btn-submit">Sign In</button>
+                            <div class="single-bottom">
+                                <input type="checkbox" id="brand" value="">
+                                <label for="brand"><span></span>Remember Me.</label>
+                            </div>
+                            @*<input type="submit" id="btn-submit" value="Sign In">*@
+                            <button class="btn-submit" id="btn-submit">Sign In</button>
                             @*}*@
                         </div>
                     </div>
@@ -294,14 +306,14 @@
                     <div class="login">
                         <div class="login-right">
                             @*<form action="#" id="form-register">*@
-                                <h3>Register </h3>
-                                <span id="span-register" style="color:red; font-weight:bold"></span>
-                                <input type="text" name="username" id="user-name-register" required="" placeholder="Nhập username">
-                                <input type="text" name="phone" id="phone-register" required="" placeholder="Nhập số điện thoại">
-                                <input type="text" name="email" id="email-register" required="" placeholder="Nhập email">
-                                <input type="password" name="password" id="password-register" required="" placeholder="Nhập mật khẩu">
+                            <h3>Register </h3>
+                            <span id="span-register" style="color:red; font-weight:bold"></span>
+                            <input type="text" name="username" id="user-name-register" required="" placeholder="Nhập username">
+                            <input type="text" name="phone" id="phone-register" required="" placeholder="Nhập số điện thoại">
+                            <input type="text" name="email" id="email-register" required="" placeholder="Nhập email">
+                            <input type="password" name="password" id="password-register" required="" placeholder="Nhập mật khẩu">
 
-                                <button type="submit" class="btn-submit" id="btn-submit-register">Đăng ký ngay</button>
+                            <button type="submit" class="btn-submit" id="btn-submit-register">Đăng ký ngay</button>
                             @*</form>*@
                         </div>
                         <div class="clearfix"></div>
@@ -392,5 +404,5 @@
             x.style.display = "none";
         }
     })
-    
+
 </script>
