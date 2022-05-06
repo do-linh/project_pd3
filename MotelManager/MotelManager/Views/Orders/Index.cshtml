@@ -6,3 +6,39 @@
 
 <h2>Order List</h2>
 
+<table class="table">
+    <tr>
+        <th>
+            Số Phòng
+        </th>
+        <th>
+            Ngày đặt
+        </th>
+        <th>
+            Tình trạng
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Motel.motel_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingDate)
+            </td>
+            <td>
+                <div style="color:red">Đang chờ xác nhận</div>
+            </td>
+            <td>
+                <button class="btn-primary">
+                    @Html.ActionLink("Chi tiết", "Details", new { id = item.idOrder }, new { @style = "color:black;" })
+                </button>
+
+            </td>
+        </tr>
+    }
+
+</table>
