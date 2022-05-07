@@ -72,32 +72,8 @@ namespace MotelManager.Controllers
             }
             return RedirectToAction("Cart");
         }
-        //Xóa giỏ hàng
-        public ActionResult XoaGioHang(int imotel)
-        {
-            //Kiểm tra masp
-            Motel mt = db.Motels.SingleOrDefault(n => n.motel_id == imotel);
-            //Nếu get sai masp thì sẽ trả về trang lỗi 404
-            if (mt == null)
-            {
-                Response.StatusCode = 404;
-                return null;
-            }
-            //Lấy giỏ hàng ra từ session
-            List<Cart> lstCart = LayGioHang();
-            Cart motels = lstCart.SingleOrDefault(n => n.imotel == imotel);
-            //Nếu mà tồn tại thì chúng ta cho sửa số lượng
-            if (motels != null)
-            {
-                lstCart.RemoveAll(n => n.imotel == imotel);
+        
 
-            }
-            if (lstCart.Count == 0)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            return RedirectToAction("Index");
-        }
         //Xây dựng trang giỏ hàng
         public ActionResult Index()
         {
@@ -127,13 +103,13 @@ namespace MotelManager.Controllers
                 order.BookingDate = DateTime.Now;
                 order.Status = "Đang kiểm tra phòng";
                 db.Orders.Add(order);
-                
+
                 orderDetail.idOrder = order.idOrder;
                 orderDetail.motel_id = item.imotel;
                 orderDetail.price = (decimal?)item.dprice;
                 orderDetail.quantity = item.quantity;
                 db.OrderDetails.Add(orderDetail);
-                
+
             }
             db.SaveChanges();
             return RedirectToAction("Index", "Orders");
@@ -162,5 +138,33 @@ namespace MotelManager.Controllers
             }
             return dprice;
         }
+
+        //Xóa giỏ hàng
+        public ActionResult XoaGioHang(int imotel)
+        {
+            //Kiểm tra masp
+            Motel mt = db.Motels.SingleOrDefault(n => n.motel_id == imotel);
+            //Nếu get sai masp thì sẽ trả về trang lỗi 404
+            if (mt == null)
+            {
+                Response.StatusCode = 404;
+                return null;
+            }
+            //Lấy giỏ hàng ra từ session
+            List<Cart> lstCart = LayGioHang();
+            Cart motels = lstCart.SingleOrDefault(n => n.imotel == imotel);
+            //Nếu mà tồn tại thì chúng ta cho sửa số lượng
+            if (motels != null)
+            {
+                lstCart.RemoveAll(n => n.imotel == imotel);
+
+            }
+            if (lstCart.Count == 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }

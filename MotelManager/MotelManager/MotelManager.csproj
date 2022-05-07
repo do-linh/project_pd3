@@ -2209,7 +2209,6 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Public\sweetalert2\" />
     <Folder Include="Views\Account\" />
-    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
