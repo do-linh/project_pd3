@@ -19,6 +19,7 @@ namespace MotelManager.Models.EF
 
         [StringLength(50)]
         public string slug { get; set; }
+
         public virtual City Cities { get; set; }
     }
 }

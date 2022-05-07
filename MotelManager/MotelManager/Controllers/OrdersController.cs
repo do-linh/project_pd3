@@ -16,10 +16,22 @@ namespace MotelManager.Controllers
         //Hien thi ds don hang
         public ActionResult Index()
         {
+           List<OrderDetail> showOrderList = new  List<OrderDetail>() ;
+
             UserLogin kh = (UserLogin)Session[Common.CommonConstants.USER_SESSION];
+            if(kh == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             int maND = (int)kh.userID;
-            var orders = db.Orders.Where(d => d.account_id == maND);
-            return View(orders);
+            List<Order> orders = (List<Order>)db.Orders.Where(x=>x.account_id == maND ).ToList();
+            foreach(Order order in orders)
+            {
+                OrderDetail orderDetail = (OrderDetail) db.OrderDetails.Where(x => x.idOrder == order.idOrder).FirstOrDefault();
+                showOrderList.Add(orderDetail);
+            }
+            //ViewBag.showOrderList = showOrderList;
+            return View(showOrderList);
         }
     }
 }

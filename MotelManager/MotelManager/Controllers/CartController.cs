@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MotelManager.Common;
 using MotelManager.Models.EF;
 
 namespace MotelManager.Controllers
@@ -95,10 +96,10 @@ namespace MotelManager.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Cart");
+            return RedirectToAction("Index");
         }
         //Xây dựng trang giỏ hàng
-        public ActionResult Cart()
+        public ActionResult Index()
         {
             if (Session["Cart"] == null)
             {
@@ -107,6 +108,37 @@ namespace MotelManager.Controllers
             List<Cart> lstCart = LayGioHang();
             return View(lstCart);
         }
+
+        // Đặt hàng trong giỏ hàng
+        public ActionResult OrderRoom()
+        {
+            List<Cart> lstCart = LayGioHang();
+            UserLogin kh = (UserLogin)Session[Common.CommonConstants.USER_SESSION];
+
+            Order order = new Order();
+            OrderDetail orderDetail = new OrderDetail();
+
+
+            Account account = db.Accounts.Where(x => x.account_id == kh.userID).FirstOrDefault();
+            foreach (var item in lstCart)
+            {
+                order.Account = account;
+                order.account_id = account.account_id;
+                order.BookingDate = DateTime.Now;
+                order.Status = "Đang kiểm tra phòng";
+                db.Orders.Add(order);
+                
+                orderDetail.idOrder = order.idOrder;
+                orderDetail.motel_id = item.imotel;
+                orderDetail.price = (decimal?)item.dprice;
+                orderDetail.quantity = item.quantity;
+                db.OrderDetails.Add(orderDetail);
+                
+            }
+            db.SaveChanges();
+            return RedirectToAction("Index", "Orders");
+        }
+
         //Tính tổng số lượng và tổng tiền
         //Tính tổng số lượng
         private int TongSoLuong()

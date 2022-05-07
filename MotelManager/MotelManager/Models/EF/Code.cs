@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
-
 namespace MotelManager.Models.EF
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+
     [Table("Code")]
     public partial class Code
     {
@@ -16,6 +15,5 @@ namespace MotelManager.Models.EF
         [Column("code")]
         [StringLength(200)]
         public string code { get; set; }
-
     }
 }

@@ -191,7 +191,7 @@
     <Compile Include="Models\EF\Motel.cs" />
     <Compile Include="Models\EF\Notification.cs" />
     <Compile Include="Models\EF\Order.cs" />
-    <Compile Include="Models\EF\OrderDetails.cs" />
+    <Compile Include="Models\EF\OrderDetail.cs" />
     <Compile Include="Models\EF\Post.cs" />
     <Compile Include="Models\EF\Report.cs" />
     <Compile Include="Models\EF\Setting.cs" />
@@ -2202,7 +2202,7 @@
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Shared\_LayoutOrder.cshtml" />
     <Content Include="Views\Orders\Index.cshtml" />
-    <Content Include="Views\Cart\Cart.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

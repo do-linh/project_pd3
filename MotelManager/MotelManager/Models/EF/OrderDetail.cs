@@ -6,7 +6,7 @@ namespace MotelManager.Models.EF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class OrderDetails
+    public partial class OrderDetail
     {
         [Key]
         [Column(Order = 0)]

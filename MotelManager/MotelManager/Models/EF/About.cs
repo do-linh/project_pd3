@@ -29,6 +29,7 @@ namespace MotelManager.Models.EF
 
         [StringLength(10)]
         public string finish_time { get; set; }
+
         public string iframe { get; set; }
     }
 }

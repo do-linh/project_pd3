@@ -24,6 +24,7 @@ namespace MotelManager.Models.EF
         public bool? status { get; set; }
 
         public int? post_id { get; set; }
+
         public virtual Post Post { get; set; }
     }
 }

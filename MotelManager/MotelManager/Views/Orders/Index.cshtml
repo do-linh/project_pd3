@@ -1,7 +1,9 @@
-﻿@model IEnumerable<MotelManager.Models.EF.Order>
+﻿@model  IEnumerable<MotelManager.Models.EF.OrderDetail> 
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutOrder.cshtml";
+  
 }
 
 <h2>Order List</h2>
@@ -20,24 +22,24 @@
 
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var orderDetail in Model)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Motel.motel_id)
+                @Html.DisplayFor(modelItem => orderDetail.Motel.motel_id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BookingDate)
+                @Html.DisplayFor(modelItem => orderDetail.Order.BookingDate)
             </td>
             <td>
-                <div style="color:red">Đang chờ xác nhận</div>
+                <div style="color:red"> @Html.DisplayFor(modelItem =>orderDetail.Order.Status)</div>
             </td>
-            <td>
+            @*<td>
                 <button class="btn-primary">
                     @Html.ActionLink("Chi tiết", "Details", new { id = item.idOrder }, new { @style = "color:black;" })
                 </button>
 
-            </td>
+            </td>*@
         </tr>
     }
 

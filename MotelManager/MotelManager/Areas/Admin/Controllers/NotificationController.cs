@@ -18,7 +18,7 @@ namespace MotelManager.Areas.Admin.Controllers
         }
         public ActionResult ListNoitification()
         {
-            ViewBag.noti = db.Notifications.Include(x => x.Account).ToList();
+            ViewBag.noti = db.Notifications.Include(x => x.account_id).ToList();
             return View();
         }
         [HttpPost]

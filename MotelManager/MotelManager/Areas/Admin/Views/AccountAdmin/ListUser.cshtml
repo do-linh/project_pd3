@@ -44,7 +44,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr> 
+                        <tr>
                             <td>@item.username<span id="@item.username" hidden>@item.username</span></td>
                             <td>@item.email</td>
                             <td>@item.fullname</td>
@@ -113,36 +113,36 @@
             buttons: true,
             dangerMode: true,
         })
-            .then((willDelete) => {
-                if (willDelete) {
-                    swal("Đã xóa", {
-                        icon: "success",
-                    }).then(() => {
-                        $.ajax({
-                            type: 'post',
-                            url: '@Url.Action("DeleteUser", "AccountAdmin")',
-                            data: { username: username.innerText },
-                            dataType: 'json',
-                            success: function (data) {
-                                if (data.result == 'success') {
-                                    location.reload();
-                                }
-                                else if (data.result == 'error') {
-                                    swal("Lỗi hệ thống, Không thể xóa!", "", "error");
-                                }
-                                else {
-                                    swal("Không thể xóa tài khoản admin duy nhất!", "", "error");
-                                }
-
-                            },
-                            error: function () {
-                                swal("Lỗi hệ thống", "", "error");
+        .then((willDelete) => {
+            if (willDelete) {
+                swal("Đã xóa", {
+                    icon: "success",
+                }).then(() => {
+                    $.ajax({
+                        type: 'post',
+                        url: '@Url.Action("DeleteUser", "AccountAdmin")',
+                        data: { username: username.innerText },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.result == 'success') {
+                                location.reload();
                             }
-                        })
+                            else if (data.result == 'error') {
+                                swal("Lỗi hệ thống, Không thể xóa!", "", "error");
+                            }
+                            else {
+                                swal("Không thể xóa tài khoản admin duy nhất!", "", "error");
+                            }
+
+                        },
+                        error: function () {
+                            swal("Lỗi hệ thống", "", "error");
+                        }
                     })
-                } else {
-                    swal("Đã hủy");
-                }
-            });
+                })
+            } else {
+                swal("Đã hủy");
+            }
+        });
     }
 </script>

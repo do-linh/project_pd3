@@ -15,6 +15,7 @@ namespace MotelManager.Models.EF
         public virtual DbSet<About> Abouts { get; set; }
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<City> Cities { get; set; }
+        public virtual DbSet<Code> Codes { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<District> Districts { get; set; }
         public virtual DbSet<Favorite> Favorites { get; set; }
@@ -22,14 +23,12 @@ namespace MotelManager.Models.EF
         public virtual DbSet<Motel> Motels { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<OrderDetails> OrderDetailss { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<SubDistrict> SubDistricts { get; set; }
         public virtual DbSet<TypeRE> TypeREs { get; set; }
-        public virtual DbSet<Code> Codes { get; set; }
-
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -105,7 +104,7 @@ namespace MotelManager.Models.EF
                 .Property(e => e.code_motel)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<OrderDetails>()
+            modelBuilder.Entity<OrderDetail>()
                 .Property(e => e.price)
                 .HasPrecision(18, 0);
 
@@ -124,6 +123,15 @@ namespace MotelManager.Models.EF
             modelBuilder.Entity<TypeRE>()
                 .Property(e => e.slug)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<Order>()
+               .Property(e => e.account_id);
+
+            modelBuilder.Entity<Order>()
+                .Property(e => e.Status);
+
+            modelBuilder.Entity<Order>()
+                .Property(e => e.BookingDate);
         }
     }
 }

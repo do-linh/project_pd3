@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "_HeaderLayout";
     var session = (MotelManager.Common.UserLogin)Session[MotelManager.Common.CommonConstants.USER_SESSION];
+    var sessionCart = (IEnumerable<MotelManager.Models.EF.Cart>)Session["Cart"];
     List<MotelManager.Models.EF.TypeRE> types = ViewBag.type;
     List<MotelManager.Models.EF.Notification> notifications = ViewBag.noti;
     List<MotelManager.Models.EF.Notification> allnotifications = ViewBag.allnoti;
@@ -134,12 +135,19 @@
                             </li>
 
                             <li>
+                                <a id="cart" href="@Url.Action("Index","Cart")">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <span class="count-cart">@(sessionCart == null ? 0:sessionCart.Count())</span>
+                                </a>
+                            </li>
+
+                            <li>
                                 <a class="btn btn-default" href="@Url.Action("CreatePost","UserManager")" id="btn-create-post"><i class="fas fa-plus-circle"></i><p class="btn-posting" style="float: right">Đăng tin</p></a>
                             </li>
                             @*<li>
-                                    <i class="fa fa-sign-out-alt"></i>
-                                    <a href="@Url.Action("Logout","Account")">Logout</a>
-                                </li>*@
+                <i class="fa fa-sign-out-alt"></i>
+                <a href="@Url.Action("Logout","Account")">Logout</a>
+            </li>*@
                         }
 
                     </ul>

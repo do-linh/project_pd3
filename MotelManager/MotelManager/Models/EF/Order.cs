@@ -11,12 +11,12 @@ namespace MotelManager.Models.EF
     public partial class Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Order() 
+        public Order()
         {
-            OrderDetails = new HashSet<OrderDetails>();
+            OrderDetail = new HashSet<OrderDetail>();
         }
         [Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idOrder { get; set; }
 
         public DateTime? BookingDate { get; set; }
@@ -27,8 +27,8 @@ namespace MotelManager.Models.EF
         public int? account_id { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetail { get; set; }
         public virtual Account Account { get; set; }
-        public virtual Motel Motel { get; set; }
+        //public virtual Motel Motel { get; set; }
     }
 }

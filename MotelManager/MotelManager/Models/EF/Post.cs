@@ -29,6 +29,7 @@ namespace MotelManager.Models.EF
 
         [Column(TypeName = "date")]
         public DateTime? created_date { get; set; }
+
         [Column(TypeName = "date")]
         public DateTime? updated_date { get; set; }
 
@@ -40,8 +41,10 @@ namespace MotelManager.Models.EF
 
         [NotMapped]
         public HttpPostedFileBase ImageUpload { get; set; }
+
         [StringLength(200)]
         public string code_post { get; set; }
+
         public byte[] image_post_byte { get; set; }
     }
 }
