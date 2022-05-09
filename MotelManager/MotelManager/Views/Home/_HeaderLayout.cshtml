@@ -8,9 +8,38 @@
     List<MotelManager.Models.EF.Notification> allnotifications = ViewBag.allnoti;
 }
 <style>
+
+    .head-top {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+    }
+    .header-top {
+        background: #003580;
+    }
     ul {
     }
 
+    .navbar-default .navbar-nav > li > a {
+        color: #003580;
+        font-size: 1.3em;
+        font-family: 'Roboto Flex', sans-serif;
+        font-weight: 600;
+    }
+
+    .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+        background: #cccccc82;
+        color: #003580;
+        border-radius: 20px;
+        text-decoration: none;
+    }
+    .nav > li > a {
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+    }
     .inline-nav {
         float: left;
         margin-left: 20px
@@ -42,7 +71,7 @@
     }
 
     .btn-submit {
-        background: #05222A;
+        background: #003580;
         color: #fff;
         font-size: 1.5em;
         border: none;
@@ -59,7 +88,8 @@
     }
 
     .count-notification {
-        margin-left: -10px
+        margin-left: -10px;
+        color: #fff;
     }
 
     .notification-list {
@@ -84,6 +114,10 @@
 
     .title-notification {
         font-weight: bold;
+    }
+
+    .fa-plus-circle {
+        color: #003580 !important;
     }
 </style>
 <div class="header" id="home">
@@ -145,19 +179,23 @@
                                 <a class="btn btn-default" href="@Url.Action("CreatePost","UserManager")" id="btn-create-post"><i class="fas fa-plus-circle"></i><p class="btn-posting" style="float: right">Đăng tin</p></a>
                             </li>
                             @*<li>
-                <i class="fa fa-sign-out-alt"></i>
-                <a href="@Url.Action("Logout","Account")">Logout</a>
-            </li>*@
+                        <i class="fa fa-sign-out-alt"></i>
+                        <a href="@Url.Action("Logout","Account")">Logout</a>
+                    </li>*@
                         }
 
                     </ul>
                 </div>
 
                 <div class="clearfix"></div>
+
+                <div class="logo">
+                    <h1 class="logo-text"><a href="@Url.Action("Index","Home")">Booking<span></span></a></h1>
+                </div>
             </div>
-            <div class="logo">
+            @*<div class="logo">
                 <h1 class="logo-text"><a href="@Url.Action("Index","Home")">Booking<span></span></a></h1>
-            </div>
+            </div>*@
 
         </div>
         <div class="notification-list" style="display: none" id="menu-notification">

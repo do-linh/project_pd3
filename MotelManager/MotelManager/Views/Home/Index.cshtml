@@ -12,7 +12,7 @@
 <style>
     .heart-post {
         font-size: 2em;
-        color: #02B875;
+        color: #003580;
     }
 
     #user-id {  
@@ -36,8 +36,8 @@
         margin: 10px 0 10px 0
     }
     .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
-        background-color: #02B875;
-        border-color: #02B875;
+        background-color: #003580;
+        border-color: #003580;
     }
     .pagination > li > a, .pagination > li > span {
         color: #05222A;
@@ -45,6 +45,15 @@
     .list-city{
         background-color: white;
         margin-top: 10px
+    }
+
+    .list-city-item a {
+        text-decoration: none;
+        line-height: 1.75;
+    }
+
+    .list-city-item:hover {
+        background: #3274d557;
     }
     .new-post {
         background-color: white;
@@ -66,7 +75,10 @@
 
     }
     .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
-        background-color: #02B875;
+        background-color: #003580;
+    }
+    .title {
+        color: #003580;
     }
 </style>
 <div class="popular-w3">
@@ -165,7 +177,7 @@
                                             <p>@itemnew.sub_title</p>
                                         }
                                     }
-                                    <label style="color:#00deb6">Ngày Đăng: &nbsp;</label>@itemnew.created_date.ToString().Substring(0, 10)
+                                    <label style="color: #003580">Ngày Đăng: &nbsp;</label>@itemnew.created_date.ToString().Substring(0, 10)
                                 </div>
                             </div>
                         </a>
@@ -176,7 +188,7 @@
                     <hr />
                     @foreach (var item in listcity)
                     {
-                        <p><a href="@Url.Action("Search","Home", new { city_id = item.city_id})" style="color: #636e72">Thuê nhà trọ @item.name</a></p>
+                        <p class="list-city-item"><a href="@Url.Action("Search","Home", new { city_id = item.city_id})" style="color: #636e72">Thuê nhà trọ @item.name</a></p>
                     }
                 </div>
             </div>
