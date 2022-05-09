@@ -34,35 +34,5 @@ namespace MotelManager.Controllers
             return View(showOrderList);
         }
 
-        [HttpPost]
-        public JsonResult DeleteItem(int idOrder)
-        {
-            try
-            {
-                var model = db.Orders.Where(x => x.idOrder == idOrder).FirstOrDefault();
-                if (model.Status == "order")
-                {
-                    var count = db.Orders.Where(x => x.Status == "order").ToList().Count();
-                    if (count == 1)
-                    {
-                        return Json(new { result = "order", JsonRequestBehavior = JsonRequestBehavior.AllowGet });
-                    }
-                    else
-                    {
-                        db.Orders.Remove(model);
-                        db.SaveChanges();
-                        return Json(new { result = "success", JsonRequestBehavior = JsonRequestBehavior.AllowGet });
-                    }
-                }
-                db.Orders.Remove(model);
-                db.SaveChanges();
-                return Json(new { result = "success", JsonRequestBehavior = JsonRequestBehavior.AllowGet });
-            }
-            catch
-            {
-                return Json(new { result = "error", JsonRequestBehavior = JsonRequestBehavior.DenyGet });
-            }
-        }
-
     }
 }

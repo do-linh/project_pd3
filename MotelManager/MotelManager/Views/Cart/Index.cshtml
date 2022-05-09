@@ -5,12 +5,33 @@
     Layout = "~/Views/Shared/_LayoutOrder.cshtml";
 }
 
+
+<style>
+    .btn-primary {
+        background: #003580;
+        border-color: transparent;
+        border-radius: 10px;
+    }
+    .btn-primary:hover {
+        background: #1963cb;
+        border-color: transparent;
+    }
+    .btn-primary a {
+        display: block;
+        color: #fff;
+        font-size: 1.5rem;
+        padding: 5px 15px;
+        text-decoration: none;
+        border: transparent;
+    }
+</style>
+
 <h2>Cart</h2>
 
 <table class="table">
     <tr>
         <th>
-            Tên
+            ID
         </th>
         <th>
             Giá
@@ -27,7 +48,7 @@
     {
         <tr>
             <td>
-                @item.nameMotel
+                @item.imotel
             </td>
             <td>
                 @item.dprice
@@ -58,9 +79,9 @@
     }
 
 </table>
-@*<button class="btn-primary" style="color:black">
+<button class="btn-primary">
     @Html.ActionLink("Đặt Phòng", "OrderRoom")
-</button>*@
+</button>
 
 <script>
     var DelUser = function (imotel) {

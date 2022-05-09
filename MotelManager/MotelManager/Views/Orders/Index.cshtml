@@ -11,7 +11,7 @@
 <table class="table">
     <tr>
         <th>
-            Số Phòng
+            ID Phòng
         </th>
         <th>
             Ngày đặt
@@ -40,8 +40,60 @@
                     </button>
 
                 </td>*@
+
+            @*<th>
+                <a href="#" onclick="DelUser(imotel => @orderDetail.motel_id)" class="btn btn-danger btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-trash"></i>
+                    </span>
+                    <span class="text">Del</span>
+                </a>
+            </th>*@
         </tr>
     }
 
 </table>
+
+@*<script>
+    var DelUser = function (imotel) {
+        console.log(imotel)
+        swal({
+            title: "Bạn có chắc muốn xóa?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                swal("Đã xóa", {
+                    icon: "success",
+                }).then(() => {
+                    $.ajax({
+                        type: 'post',
+                        url: '@Url.Action("XoaGioHang", "Cart")',
+                        data: { imotel: imotel },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.result == 'success') {
+                                location.reload();
+                            }
+                            else if (data.result == 'error') {
+                                swal("Lỗi hệ thống, Không thể xóa!", "", "error");
+                            }
+                            else {
+                                swal("Không thể xóa tài khoản admin duy nhất!", "", "error");
+                            }
+
+                        },
+                        error: function () {
+                            swal("Lỗi hệ thống", "", "error");
+                        }
+                    })
+                })
+            } else {
+                swal("Đã hủy");
+            }
+        });
+    }
+</script>*@
 
