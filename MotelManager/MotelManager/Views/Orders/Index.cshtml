@@ -40,58 +40,8 @@
                     </button>
 
                 </td>*@
-            <th>
-                <a href="#" onclick="DelUser(motelItem => orderDetail.motelItem)" class="btn btn-danger btn-icon-split">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-trash"></i>
-                    </span>
-                    <span class="text">Del</span>
-                </a>
-            </th>
         </tr>
     }
 
 </table>
 
-<script>
-    var DelUser = function (motelItem) {
-        console.log(motelItem)
-        swal({
-            title: "Bạn có chắc muốn xóa?",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willDelete) => {
-            if (willDelete) {
-                swal("Đã xóa", {
-                    icon: "success",
-                }).then(() => {
-                    $.ajax({
-                        type: 'post',
-                        url: '@Url.Action("DeleteItem", "Orders")',
-                        data: { motelItem: motelItem.innerText },
-                        dataType: 'json',
-                        success: function (data) {
-                            if (data.result == 'success') {
-                                location.reload();
-                            }
-                            else if (data.result == 'error') {
-                                swal("Lỗi hệ thống, Không thể xóa!", "", "error");
-                            }
-                            else {
-                                swal("Không thể xóa tài khoản admin duy nhất!", "", "error");
-                            }
-
-                        },
-                        error: function () {
-                            swal("Lỗi hệ thống", "", "error");
-                        }
-                    })
-                })
-            } else {
-                swal("Đã hủy");
-            }
-        });
-    }
-</script>

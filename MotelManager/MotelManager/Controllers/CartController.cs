@@ -161,9 +161,12 @@ namespace MotelManager.Controllers
             }
             if (lstCart.Count == 0)
             {
-                return RedirectToAction("Index", "Home");
+                //return RedirectToAction("Index", "Home");
+                return Json(new { result = "success", JsonRequestBehavior = JsonRequestBehavior.AllowGet });
             }
-            return RedirectToAction("Index");
+            //return RedirectToAction("Index");
+            return Json(new { result = "success", JsonRequestBehavior = JsonRequestBehavior.AllowGet });
+
         }
 
     }

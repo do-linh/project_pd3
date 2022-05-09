@@ -1917,6 +1917,7 @@
     <Content Include="Public\bootstrapv5\js\smsverification.js" />
     <Content Include="Public\css\bootstrap.css" />
     <Content Include="Public\css\createPostCss.css" />
+    <Content Include="Public\css\custom-style.css" />
     <Content Include="Public\css\flexslider.css" />
     <Content Include="Public\css\imge-slider.css" />
     <Content Include="Public\css\main.style.css" />

@@ -185,8 +185,8 @@ C:\Source\MotelManager\MotelManager\bin\Newtonsoft.Json.xml
 C:\Source\MotelManager\MotelManager\bin\Twilio.xml
 C:\Source\MotelManager\MotelManager\bin\Antlr3.Runtime.pdb
 C:\Source\MotelManager\MotelManager\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Source\MotelManager\MotelManager\obj\Debug\MotelManager.csproj.AssemblyReference.cache
 C:\Source\MotelManager\MotelManager\obj\Debug\MotelManager.csproj.CoreCompileInputs.cache
 C:\Source\MotelManager\MotelManager\obj\Debug\MotelManager.csproj.CopyComplete
 C:\Source\MotelManager\MotelManager\obj\Debug\MotelManager.dll
 C:\Source\MotelManager\MotelManager\obj\Debug\MotelManager.pdb
+C:\Source\MotelManager\MotelManager\obj\Debug\MotelManager.csproj.AssemblyReference.cache

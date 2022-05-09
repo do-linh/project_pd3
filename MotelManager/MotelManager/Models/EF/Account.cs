@@ -14,6 +14,7 @@ namespace MotelManager.Models.EF
         public Account()
         {
             Orders = new HashSet<Order>();
+            Notifications = new HashSet<Notification>();
         }
         [Key]
         public int account_id { get; set; }
@@ -52,6 +53,7 @@ namespace MotelManager.Models.EF
         public byte[] avatarImage { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
 
     }
 }

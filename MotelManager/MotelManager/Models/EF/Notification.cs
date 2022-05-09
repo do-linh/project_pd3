@@ -26,5 +26,9 @@ namespace MotelManager.Models.EF
         public int? post_id { get; set; }
 
         public int? status { get; set; }
+
+        [ForeignKey(nameof(account_id))]
+        [InverseProperty("Notifications")]
+        public virtual Account Account { get; set; }
     }
 }

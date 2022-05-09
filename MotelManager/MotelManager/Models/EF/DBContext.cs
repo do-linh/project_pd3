@@ -132,6 +132,9 @@ namespace MotelManager.Models.EF
 
             modelBuilder.Entity<Order>()
                 .Property(e => e.BookingDate);
+
+            modelBuilder.Entity<Notification>()
+              .Property(e => e.account_id);
         }
     }
 }

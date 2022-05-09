@@ -156,7 +156,7 @@
                 <div class="clearfix"></div>
             </div>
             <div class="logo">
-                <h1 class="logo-text"><a href="@Url.Action("Index","Home")">Green Roof<span>Real Estate</span></a></h1>
+                <h1 class="logo-text"><a href="@Url.Action("Index","Home")">Booking<span></span></a></h1>
             </div>
 
         </div>
@@ -222,7 +222,8 @@
                             <ul class="nav navbar-nav menu__list" style="float:left">
                                 <li class="menu__item menu__item--current">
                                     <a href="@Url.Action("Index","Home")"
-                                       class="menu__link"><span class="menu__helper">Home</span></a>
+                                       class="menu__link"><span class="menu__helper">Home</span>
+                                    </a>
                                 </li>
                                 <li class="menu__item inline-nav">
                                     <a class="dropdown-toggle menu__link" data-toggle="dropdown" href="#">
@@ -231,14 +232,15 @@
                                     <ul class="dropdown-menu" style="font-size: 15px">
                                         @foreach (var item in types)
                                         {
-                                            <li><a href="">@item.name</a></li>
+                                            <li class="type-item"><a href="">@item.name</a></li>
                                         }
                                     </ul>
                                 </li>
-                                <li class="menu__item inline-nav">
-                                    <a style="color:black"
-                                       class="nav-link"
-                                       href="@Url.Action("Index", "Orders")">Đặt Phòng</a>
+                                <li class="menu__item inline-nav menu__item--current">
+                                    <a href="@Url.Action("Index", "Orders")"
+                                       class="menu__link">
+                                        <span class="menu__helper">Đặt Phòng</span>
+                                    </a>
                                 </li>
                             </ul>
                         </nav>
